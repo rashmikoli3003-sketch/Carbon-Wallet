@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowRight, RefreshCw, TreePine, Car, Lightbulb, ShieldCheck, Flame, Globe } from "lucide-react";
 import {
   BarChart,
@@ -8,11 +9,8 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Cell
 } from "recharts";
-import {
-  WHAT_IF_DEFAULT_HABITS
-} from "../data/mockData";
+import { WHAT_IF_DEFAULT_HABITS } from "../data/mockData";
 import { calculateRealTimeWhatIf } from "../services/carbonApi";
 import {
   LeafDecoration,
@@ -22,10 +20,8 @@ import {
 } from "../components/HandDrawnDoodles";
 
 export default function WhatIfPage() {
-  // Baseline Current Habits
   const [current, setCurrent] = useState(WHAT_IF_DEFAULT_HABITS);
 
-  // Proposed What-If Habits
   const [proposed, setProposed] = useState({
     carDaysPerWeek: 2,
     meatMealsPerWeek: 1,
@@ -60,35 +56,53 @@ export default function WhatIfPage() {
   };
 
   return (
-    <div className="space-y-8 p-4 lg:p-8 max-w-7xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="space-y-8 p-4 lg:p-8 max-w-7xl mx-auto"
+    >
       
       {/* Header Banner */}
-      <div className="bg-[#173D28] text-[#FFF8E8] p-6 lg:p-8 rounded-3xl border-3 border-[#20251F] shadow-[8px_8px_0px_#0B2418] relative overflow-hidden">
-        <LeafDecoration className="absolute -top-3 -right-3 w-20 h-20 text-[#C4E89A]/20" />
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-2xl">🔮</span>
-              <h1 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#C4E89A]">
-                What If? Mode
-              </h1>
-              <span className="bg-[#C4E89A] text-[#0B2418] text-[10px] font-black px-2.5 py-0.5 rounded-full border border-[#20251F] flex items-center gap-1">
-                <Globe className="w-3 h-3" />
-                DEFRA 2026 FACTORS
-              </span>
-            </div>
-            <p className="text-sm font-medium text-[#FFF8E8]/90 max-w-2xl">
-              Experiment with your habits and calculate how your annual carbon emissions change using verified EPA & DEFRA 2026 lifecycle emission factors.
-            </p>
+      <div className="bg-[#173D28] text-[#FFF8E8] p-6 lg:p-8 rounded-3xl border-3 border-[#20251F] shadow-[8px_8px_0px_#0B2418] relative overflow-hidden grid lg:grid-cols-12 gap-6 items-center">
+        <LeafDecoration className="absolute -top-3 -right-3 w-24 h-24 text-[#C4E89A]/20" />
+        
+        <div className="lg:col-span-8 space-y-2">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-2xl animate-spin [animation-duration:8s]">🔮</span>
+            <h1 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#C4E89A]">
+              What If? Mode
+            </h1>
+            <span className="bg-[#C4E89A] text-[#0B2418] text-[10px] font-black px-2.5 py-0.5 rounded-full border border-[#20251F] flex items-center gap-1">
+              <Globe className="w-3 h-3 animate-pulse" />
+              DEFRA 2026 FACTORS
+            </span>
           </div>
+          <p className="text-sm font-medium text-[#FFF8E8]/90 max-w-2xl">
+            Experiment with your habits and calculate how your annual carbon emissions change in real time using verified EPA & DEFRA lifecycle factors.
+          </p>
 
           <button
             onClick={handleResetScenario}
-            className="sketch-button-accent px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 shrink-0 self-start md:self-auto"
+            className="sketch-button-accent px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 mt-2"
           >
             <RefreshCw className="w-4 h-4" />
             <span>Try Another Scenario →</span>
           </button>
+        </div>
+
+        {/* Hand-Drawn Feature Artwork */}
+        <div className="lg:col-span-4 hidden lg:block">
+          <motion.div
+            whileHover={{ scale: 1.03, rotate: 1 }}
+            className="relative rounded-2xl border-2 border-[#C4E89A] overflow-hidden shadow-[4px_4px_0px_#0B2418] bg-[#FFF8E8]"
+          >
+            <img
+              src="/whatif_sketch.jpg"
+              alt="What If Climate Choice Art"
+              className="w-full h-44 object-cover"
+            />
+          </motion.div>
         </div>
       </div>
 
@@ -96,7 +110,10 @@ export default function WhatIfPage() {
       <div className="grid lg:grid-cols-12 gap-6 items-stretch relative">
         
         {/* LEFT PANEL: Current Habits */}
-        <div className="lg:col-span-5 sketch-card bg-[#F6EFE0] p-6 space-y-5">
+        <motion.div
+          whileHover={{ y: -2 }}
+          className="lg:col-span-5 sketch-card bg-[#F6EFE0] p-6 space-y-5"
+        >
           <div className="flex items-center justify-between border-b-2 border-[#20251F]/20 pb-3">
             <div>
               <span className="text-[10px] font-black uppercase text-[#173D28] tracking-wider">
@@ -180,24 +197,36 @@ export default function WhatIfPage() {
           {/* Current Total Box */}
           <div className="p-4 bg-[#FFF8E8] rounded-2xl border-2 border-[#20251F] text-center shadow-[3px_3px_0px_#0B2418]">
             <p className="text-[11px] font-bold text-[#173D28]">Calculated Baseline Annual Footprint</p>
-            <p className="font-heading text-3xl font-extrabold text-[#0B2418]">
+            <motion.p
+              key={currentCalc.totalAnnualKg}
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              className="font-heading text-3xl font-extrabold text-[#0B2418]"
+            >
               {currentCalc.totalAnnualKg.toLocaleString()} <span className="text-sm">kg CO₂e / yr</span>
-            </p>
+            </motion.p>
           </div>
-        </div>
+        </motion.div>
 
         {/* MIDDLE: Hand-Drawn Arrow & Callout */}
         <div className="hidden lg:flex lg:col-span-2 flex-col items-center justify-center my-auto text-center space-y-2 z-10">
-          <div className="bg-[#FFF8E8] p-3 rounded-2xl border-2 border-[#20251F] shadow-[3px_3px_0px_#0B2418] rotate-[-4deg]">
+          <motion.div
+            animate={{ rotate: [-4, 4, -4] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="bg-[#FFF8E8] p-3 rounded-2xl border-2 border-[#20251F] shadow-[3px_3px_0px_#0B2418]"
+          >
             <p className="font-handwritten text-lg font-bold text-[#173D28]">
               What if you changed? ⚡
             </p>
             <SketchyArrow className="w-16 h-12 text-[#173D28] mx-auto mt-1" />
-          </div>
+          </motion.div>
         </div>
 
         {/* RIGHT PANEL: What If You Changed Them? */}
-        <div className="lg:col-span-5 sketch-card bg-[#FFF8E8] p-6 space-y-5 border-2 border-[#173D28]">
+        <motion.div
+          whileHover={{ y: -2 }}
+          className="lg:col-span-5 sketch-card bg-[#FFF8E8] p-6 space-y-5 border-2 border-[#173D28]"
+        >
           <div className="flex items-center justify-between border-b-2 border-[#20251F]/20 pb-3">
             <div>
               <span className="text-[10px] font-black uppercase text-[#173D28] tracking-wider">
@@ -280,16 +309,25 @@ export default function WhatIfPage() {
           {/* Proposed Total Box */}
           <div className="p-4 bg-[#C4E89A] rounded-2xl border-2 border-[#20251F] text-center shadow-[3px_3px_0px_#0B2418]">
             <p className="text-[11px] font-black uppercase text-[#0B2418]">Projected Annual Footprint</p>
-            <p className="font-heading text-3xl font-extrabold text-[#0B2418]">
+            <motion.p
+              key={proposedCalc.totalAnnualKg}
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              className="font-heading text-3xl font-extrabold text-[#0B2418]"
+            >
               {proposedCalc.totalAnnualKg.toLocaleString()} <span className="text-sm">kg CO₂e / yr</span>
-            </p>
+            </motion.p>
           </div>
-        </div>
+        </motion.div>
 
       </div>
 
       {/* Encouraging Impact Result Banner */}
-      <div className="sketch-card bg-[#173D28] text-[#FFF8E8] p-6 lg:p-8 border-[#C4E89A] flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="sketch-card bg-[#173D28] text-[#FFF8E8] p-6 lg:p-8 border-[#C4E89A] flex flex-col md:flex-row md:items-center justify-between gap-6"
+      >
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 bg-[#C4E89A] text-[#0B2418] px-3 py-1 rounded-full text-xs font-black shadow-[2px_2px_0px_#0B2418]">
             <Sparkles className="w-3.5 h-3.5" />
@@ -306,14 +344,17 @@ export default function WhatIfPage() {
         </div>
 
         {/* Tree equivalent pill */}
-        <div className="bg-[#0B2418] p-4 rounded-2xl border-2 border-[#C4E89A] text-center shrink-0 min-w-[220px] shadow-[4px_4px_0px_#0B2418]">
-          <TreePine className="w-8 h-8 text-[#C4E89A] mx-auto mb-1" />
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="bg-[#0B2418] p-4 rounded-2xl border-2 border-[#C4E89A] text-center shrink-0 min-w-[220px] shadow-[4px_4px_0px_#0B2418]"
+        >
+          <TreePine className="w-8 h-8 text-[#C4E89A] mx-auto mb-1 animate-pulse" />
           <p className="text-xs text-[#A7C98F] font-bold">Climate Impact Equivalent</p>
           <p className="font-heading text-xl font-extrabold text-[#C4E89A]">
             🌳 {treesEquivalent} Trees Planted
           </p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Comparison Chart */}
       <div className="sketch-card bg-[#FFF8E8] p-6">
@@ -347,6 +388,6 @@ export default function WhatIfPage() {
         </div>
       </div>
 
-    </div>
+    </motion.div>
   );
 }

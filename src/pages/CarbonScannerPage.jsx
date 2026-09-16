@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Scan,
   Upload,
@@ -46,29 +47,44 @@ export default function CarbonScannerPage({ onLogActivity }) {
   };
 
   return (
-    <div className="space-y-8 p-4 lg:p-8 max-w-5xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="space-y-8 p-4 lg:p-8 max-w-5xl mx-auto"
+    >
       
       {/* Header Banner */}
-      <div className="bg-[#F6EFE0] p-6 rounded-3xl border-3 border-[#20251F] shadow-[6px_6px_0px_#0B2418] relative overflow-hidden">
-        <LeafDecoration className="absolute -top-3 -right-3 w-16 h-16 text-[#A7C98F]/40" />
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <h1 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#0B2418]">
-                Scan Your Impact 📸
-              </h1>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#173D28] text-[#C4E89A] border-2 border-[#20251F] text-xs font-black shadow-[2px_2px_0px_#0B2418]">
-                <Globe className="w-3.5 h-3.5 animate-pulse" />
-                LIVE API DATA
-              </span>
-            </div>
-            <p className="text-sm font-medium text-[#173D28]">
-              Upload a product image or search an item to calculate real-time carbon emissions using Open Food Facts & EPA/DEFRA LCA factors.
-            </p>
+      <div className="bg-[#F6EFE0] p-6 rounded-3xl border-3 border-[#20251F] shadow-[6px_6px_0px_#0B2418] relative overflow-hidden grid lg:grid-cols-12 gap-6 items-center">
+        <LeafDecoration className="absolute -top-3 -right-3 w-20 h-20 text-[#A7C98F]/40" />
+        
+        <div className="lg:col-span-8 space-y-2">
+          <div className="flex items-center gap-2 mb-1">
+            <h1 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#0B2418]">
+              Scan Your Impact 📸
+            </h1>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#173D28] text-[#C4E89A] border-2 border-[#20251F] text-xs font-black shadow-[2px_2px_0px_#0B2418]">
+              <Globe className="w-3.5 h-3.5 animate-pulse" />
+              LIVE API DATA
+            </span>
           </div>
-          <span className="bg-[#C4E89A] border-2 border-[#20251F] text-[#0B2418] font-black text-xs px-3 py-1 rounded-full shadow-[2px_2px_0px_#0B2418] shrink-0 self-start md:self-auto">
-            Live Open LCA Engine
-          </span>
+          <p className="text-sm font-medium text-[#173D28]">
+            Upload a product photo or search an item to calculate real-time carbon emissions using Open Food Facts & EPA/DEFRA LCA factors.
+          </p>
+        </div>
+
+        {/* Hand-Drawn Feature Art */}
+        <div className="lg:col-span-4 hidden lg:block">
+          <motion.div
+            whileHover={{ scale: 1.03, rotate: -1 }}
+            className="relative rounded-2xl border-2 border-[#20251F] overflow-hidden shadow-[4px_4px_0px_#0B2418] bg-[#FFF8E8]"
+          >
+            <img
+              src="/scanner_sketch.jpg"
+              alt="AI Scanner Sketch Concept"
+              className="w-full h-36 object-cover"
+            />
+          </motion.div>
         </div>
       </div>
 
@@ -181,8 +197,12 @@ export default function CarbonScannerPage({ onLogActivity }) {
               </p>
             </div>
           ) : scanResult ? (
-            <div className="space-y-6">
-              
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
+            >
               <div>
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-black uppercase tracking-wider text-[#C4E89A]">
@@ -234,8 +254,9 @@ export default function CarbonScannerPage({ onLogActivity }) {
                   </p>
                   <div className="grid gap-2">
                     {scanResult.alternatives.map((alt, idx) => (
-                      <div
+                      <motion.div
                         key={idx}
+                        whileHover={{ scale: 1.02 }}
                         className="flex items-center justify-between p-2.5 bg-[#FFF8E8] text-[#0B2418] rounded-xl border-1.5 border-[#20251F] shadow-[2px_2px_0px_#0B2418]"
                       >
                         <div className="flex items-center gap-2">
@@ -264,19 +285,19 @@ export default function CarbonScannerPage({ onLogActivity }) {
                         >
                           Log Choice +
                         </button>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
               )}
 
-            </div>
+            </motion.div>
           ) : null}
 
         </div>
 
       </div>
 
-    </div>
+    </motion.div>
   );
 }
