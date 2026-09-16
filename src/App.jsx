@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import OnboardingPage from "./pages/OnboardingPage";
 import LandingPage from "./pages/LandingPage";
 import AuthPage from "./pages/AuthPage";
 import DashboardPage from "./pages/DashboardPage";
@@ -18,8 +19,8 @@ import {
 } from "./data/mockData";
 
 export default function App() {
-  // Navigation & Auth State
-  const [activeTab, setActiveTab] = useState("auth");
+  // Navigation & Auth State (Starts on Onboarding Intro Slide 1 -> Slide 2 -> Slide 3 -> Login Page!)
+  const [activeTab, setActiveTab] = useState("onboarding");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // App Data (Persisted in localStorage)
@@ -75,14 +76,12 @@ export default function App() {
   const handleAddActivity = (newAct) => {
     setActivities((prev) => [newAct, ...prev]);
 
-    // Recalculate budget used
     const addedKg = parseFloat(newAct.amountKg) || 0;
     setBudget((prev) => ({
       ...prev,
       usedKg: Math.round((prev.usedKg + addedKg) * 10) / 10,
     }));
 
-    // Update categories
     setCategories((prev) =>
       prev.map((cat) => {
         if (cat.name.toLowerCase().includes(newAct.category.toLowerCase())) {
@@ -117,7 +116,7 @@ export default function App() {
     setCategories(IMPACT_CATEGORIES);
     setActivities(INITIAL_ACTIVITIES);
     setPoints(145);
-    setActiveTab("dashboard");
+    setActiveTab("onboarding");
   };
 
   // Auth Handlers
@@ -129,25 +128,29 @@ export default function App() {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    setActiveTab("landing");
+    setActiveTab("auth");
   };
 
   return (
     <div className="min-h-screen bg-[#FFF8E8] flex flex-col font-inter text-[#20251F]">
       
-      {/* Top Navigation */}
-      <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        user={user}
-        points={points}
-        onLogout={handleLogout}
-        onNavigateAuth={() => setActiveTab("auth")}
-        isLoggedIn={isLoggedIn}
-      />
+      {/* Show Navbar on main screens */}
+      {activeTab !== "onboarding" && (
+        <Navbar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          user={user}
+          points={points}
+          onLogout={handleLogout}
+          onNavigateAuth={() => setActiveTab("auth")}
+          isLoggedIn={isLoggedIn}
+        />
+      )}
 
-      {/* Main Body */}
-      {activeTab === "landing" ? (
+      {/* Main View Router */}
+      {activeTab === "onboarding" ? (
+        <OnboardingPage onFinishOnboarding={() => setActiveTab("auth")} />
+      ) : activeTab === "landing" ? (
         <LandingPage
           onStartJourney={() => setActiveTab(isLoggedIn ? "dashboard" : "auth")}
           onExploreFeatures={() => setActiveTab("what-if")}
@@ -164,7 +167,7 @@ export default function App() {
             onLogout={handleLogout}
           />
 
-          {/* Main Content Area */}
+          {/* Main Dashboard Content */}
           <main className="flex-1 overflow-y-auto min-h-[calc(100vh-65px)] pb-16">
             {activeTab === "dashboard" || activeTab === "my-carbon" ? (
               <DashboardPage
