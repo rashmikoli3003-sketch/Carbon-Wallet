@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowLeft, ArrowDown, Leaf, Shield, Sparkles, Globe, CheckCircle2 } from "lucide-react";
 import { UnderlineScribble, LeafDecoration, StarDoodle, CarbonCoin } from "../components/HandDrawnDoodles";
+import AntigravityVortexAnimation from "../components/AntigravityVortexAnimation";
 
 const ONBOARDING_SLIDES = [
   {
@@ -18,14 +19,14 @@ const ONBOARDING_SLIDES = [
   },
   {
     id: 2,
-    badge: "PAGE 2 OF 3 • THE SOLUTION",
+    badge: "PAGE 2 OF 3 • CINEMATIC ANTIGRAVITY ENGINE",
     title: "Make carbon as easy to understand as money.",
-    subtitle: "Carbon Wallet AI translates greenhouse gases into standard daily budget limits.",
-    description: "You receive a monthly allowance of 100 kg CO₂e aligned with Paris 1.5°C climate goals. Every daily action deducts carbon dollars from your wallet balance just like a credit card.",
-    image: "/carbon_wallet.jpg",
+    subtitle: "Watch carbon particles float weightlessly into your personal wallet storage.",
+    description: "You receive a monthly allowance of 100 kg CO₂e. The futuristic antigravity energy base captures floating carbon cubes, sage green leaves, and atmospheric CO₂ in real time.",
+    useVortexAnimation: true,
     statLabel: "Target Monthly Allowance",
     statValue: "100 kg CO₂e / month",
-    handwrittenQuote: "Spend your carbon budget wisely! 💳",
+    handwrittenQuote: "Swirling neon-lime antigravity vortex! 🌿",
     buttonText: "Slide Down to AI Power ↓",
   },
   {
@@ -148,19 +149,25 @@ export default function OnboardingPage({ onFinishOnboarding }) {
 
             </div>
 
-            {/* Right Artwork & Quote */}
+            {/* Right Visual / Antigravity Vortex Animation */}
             <div className="lg:col-span-5 flex flex-col items-center justify-center text-center space-y-4">
               
-              <motion.div
-                whileHover={{ scale: 1.04, rotate: 1 }}
-                className="relative w-full h-64 lg:h-72 rounded-2xl border-3 border-[#20251F] overflow-hidden shadow-[6px_6px_0px_#0B2418] bg-[#FFF8E8]"
-              >
-                <img
-                  src={slide.image}
-                  alt={slide.title}
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
+              {slide.useVortexAnimation ? (
+                <div className="w-full">
+                  <AntigravityVortexAnimation />
+                </div>
+              ) : (
+                <motion.div
+                  whileHover={{ scale: 1.04, rotate: 1 }}
+                  className="relative w-full h-64 lg:h-72 rounded-2xl border-3 border-[#20251F] overflow-hidden shadow-[6px_6px_0px_#0B2418] bg-[#FFF8E8]"
+                >
+                  <img
+                    src={slide.image}
+                    alt={slide.title}
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
+              )}
 
               {/* Handwritten Quote */}
               <div className="bg-[#FFF8E8] text-[#0B2418] px-4 py-2 rounded-2xl border-2 border-[#20251F] shadow-[3px_3px_0px_#0B2418] rotate-[-2deg]">
