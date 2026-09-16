@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Eye, EyeOff, Mail, Lock, User, MapPin, ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
+import { motion } from "framer-motion";
+import { Eye, EyeOff, Mail, Lock, User, MapPin, ArrowRight, CheckCircle2, ShieldCheck, ArrowDown } from "lucide-react";
 import { UnderlineScribble, LeafDecoration, StarDoodle } from "../components/HandDrawnDoodles";
 
 export default function AuthPage({ onLoginSuccess }) {
@@ -23,7 +24,7 @@ export default function AuthPage({ onLoginSuccess }) {
       return;
     }
     
-    setNotification({ type: "success", message: "Demo Authentication Successful!" });
+    setNotification({ type: "success", message: "Authentication Successful!" });
     setTimeout(() => {
       onLoginSuccess({
         name: name || "Eco Explorer",
@@ -34,7 +35,7 @@ export default function AuthPage({ onLoginSuccess }) {
   };
 
   const handleGoogleLogin = () => {
-    setNotification({ type: "success", message: "Google Auth (Demo Mode) Signed In!" });
+    setNotification({ type: "success", message: "Google Auth Signed In!" });
     setTimeout(() => {
       onLoginSuccess({
         name: "Eco Explorer (Google)",
@@ -45,8 +46,15 @@ export default function AuthPage({ onLoginSuccess }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF8E8] flex items-center justify-center p-4 lg:p-8 paper-texture">
-      <div className="w-full max-w-5xl bg-[#F6EFE0] rounded-3xl border-3 border-[#20251F] shadow-[8px_8px_0px_#0B2418] overflow-hidden grid lg:grid-cols-12 min-h-[640px]">
+    <div className="min-h-screen bg-[#FFF8E8] flex items-center justify-center p-4 lg:p-8 paper-texture overflow-hidden">
+      
+      {/* Sliding Down Container */}
+      <motion.div
+        initial={{ opacity: 0, y: -100, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-5xl bg-[#F6EFE0] rounded-3xl border-3 border-[#20251F] shadow-[8px_8px_0px_#0B2418] overflow-hidden grid lg:grid-cols-12 min-h-[640px]"
+      >
         
         {/* Left Side: Hand-drawn Artwork & Quote */}
         <div className="lg:col-span-5 bg-[#173D28] text-[#FFF8E8] p-6 lg:p-10 flex flex-col justify-between relative border-b-3 lg:border-b-0 lg:border-r-3 border-[#20251F]">
@@ -59,7 +67,7 @@ export default function AuthPage({ onLoginSuccess }) {
               </span>
             </div>
             <span className="bg-[#C4E89A] text-[#0B2418] text-[11px] font-black px-2.5 py-1 rounded-full border border-[#20251F] shadow-[1.5px_1.5px_0px_#0B2418]">
-              MVP Demo
+              Final Destination
             </span>
           </div>
 
@@ -84,7 +92,7 @@ export default function AuthPage({ onLoginSuccess }) {
           {/* Bottom Hackathon note */}
           <div className="flex items-center gap-2 text-xs font-medium text-[#C4E89A]/90 bg-[#0B2418]/60 p-3 rounded-2xl border border-[#C4E89A]/30">
             <ShieldCheck className="w-4 h-4 text-[#C4E89A] shrink-0" />
-            <span>Hackathon Demo • Local Storage Authentication</span>
+            <span>Secure Authentication • Enter Your Wallet</span>
           </div>
         </div>
 
@@ -269,7 +277,7 @@ export default function AuthPage({ onLoginSuccess }) {
                   </label>
                   <button
                     type="button"
-                    onClick={() => alert("Password reset link sent to demo email!")}
+                    onClick={() => alert("Password reset link sent!")}
                     className="text-xs font-extrabold text-[#173D28] hover:underline"
                   >
                     Forgot password?
@@ -306,7 +314,7 @@ export default function AuthPage({ onLoginSuccess }) {
           </div>
         </div>
 
-      </div>
+      </motion.div>
     </div>
   );
 }

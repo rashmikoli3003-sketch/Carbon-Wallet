@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowLeft, Leaf, Shield, Sparkles, Globe, CheckCircle2, ChevronRight } from "lucide-react";
+import { ArrowRight, ArrowLeft, ArrowDown, Leaf, Shield, Sparkles, Globe, CheckCircle2 } from "lucide-react";
 import { UnderlineScribble, LeafDecoration, StarDoodle, CarbonCoin } from "../components/HandDrawnDoodles";
 
 const ONBOARDING_SLIDES = [
   {
     id: 1,
-    badge: "SLIDE 1 OF 3 • THE PROBLEM",
+    badge: "PAGE 1 OF 3 • THE PROBLEM",
     title: "We track our money, but ignore our carbon.",
     subtitle: "Every car ride, beef burger, and flight creates invisible carbon emissions.",
     description: "Unlike standard bank accounts, there is no receipt, no statement, and no daily budget limit for your carbon footprint. This makes climate impact feel abstract and hard to manage.",
@@ -14,11 +14,11 @@ const ONBOARDING_SLIDES = [
     statLabel: "Average Personal Footprint",
     statValue: "4.5 Tons CO₂e / year",
     handwrittenQuote: "Invisible emissions create invisible consequences. 🌫️",
-    buttonText: "Next: The Solution →",
+    buttonText: "Slide Down to Solution ↓",
   },
   {
     id: 2,
-    badge: "SLIDE 2 OF 3 • THE SOLUTION",
+    badge: "PAGE 2 OF 3 • THE SOLUTION",
     title: "Make carbon as easy to understand as money.",
     subtitle: "Carbon Wallet AI translates greenhouse gases into standard daily budget limits.",
     description: "You receive a monthly allowance of 100 kg CO₂e aligned with Paris 1.5°C climate goals. Every daily action deducts carbon dollars from your wallet balance just like a credit card.",
@@ -26,11 +26,11 @@ const ONBOARDING_SLIDES = [
     statLabel: "Target Monthly Allowance",
     statValue: "100 kg CO₂e / month",
     handwrittenQuote: "Spend your carbon budget wisely! 💳",
-    buttonText: "Next: AI Power →",
+    buttonText: "Slide Down to AI Power ↓",
   },
   {
     id: 3,
-    badge: "SLIDE 3 OF 3 • AI INTELLIGENCE",
+    badge: "PAGE 3 OF 3 • AI INTELLIGENCE",
     title: "Predict your climate impact with AI & What-If Mode.",
     subtitle: "Scan products with AI vision and forecast annual savings with interactive scenario simulations.",
     description: "Upload product photos for real-time Open Food Facts & DEFRA lifecycle carbon calculations. Use What-If Mode to test habit changes and see how many trees you can save!",
@@ -38,7 +38,7 @@ const ONBOARDING_SLIDES = [
     statLabel: "Potential Annual Savings",
     statValue: "Up to 1,280 kg CO₂e (~58 Trees 🌳)",
     handwrittenQuote: "Every green choice earns Eco Points! 🌱",
-    buttonText: "Proceed to Login / Signup →",
+    buttonText: "Slide Down to Login Page ↓",
   }
 ];
 
@@ -62,10 +62,10 @@ export default function OnboardingPage({ onFinishOnboarding }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF8E8] flex flex-col justify-between p-4 lg:p-8 paper-texture">
+    <div className="min-h-screen bg-[#FFF8E8] flex flex-col justify-between p-4 lg:p-8 paper-texture overflow-hidden relative">
       
       {/* Top Header Bar */}
-      <div className="max-w-5xl mx-auto w-full flex items-center justify-between py-2">
+      <div className="max-w-5xl mx-auto w-full flex items-center justify-between py-2 z-20">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-[#173D28] text-[#C4E89A] border-2 border-[#20251F] shadow-[2px_2px_0px_#0B2418] flex items-center justify-center font-bold text-lg">
             🌍
@@ -86,28 +86,29 @@ export default function OnboardingPage({ onFinishOnboarding }) {
                   ? "w-8 bg-[#173D28]"
                   : "w-2.5 bg-[#A7C98F]/40 hover:bg-[#A7C98F]"
               }`}
-              title={`Go to page ${idx + 1}`}
+              title={`Slide down to page ${idx + 1}`}
             />
           ))}
 
           <button
             onClick={onFinishOnboarding}
-            className="ml-4 text-xs font-extrabold text-[#173D28] hover:underline"
+            className="ml-4 text-xs font-extrabold text-[#173D28] hover:underline flex items-center gap-1"
           >
-            Skip to Login →
+            <span>Skip to Login</span>
+            <ArrowDown className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
 
-      {/* Main Slide Card Container */}
-      <div className="max-w-5xl mx-auto w-full my-auto py-4">
+      {/* Main Sliding Down Card Container */}
+      <div className="max-w-5xl mx-auto w-full my-auto py-4 relative z-10">
         <AnimatePresence mode="wait">
           <motion.div
             key={slide.id}
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.35, ease: "easeInOut" }}
+            initial={{ opacity: 0, y: -100, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 100, scale: 0.95 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="sketch-card bg-[#F6EFE0] border-3 border-[#20251F] shadow-[8px_8px_0px_#0B2418] rounded-3xl p-6 lg:p-10 grid lg:grid-cols-12 gap-8 items-center relative overflow-hidden"
           >
             <LeafDecoration className="absolute -top-4 -right-4 w-24 h-24 text-[#A7C98F]/30" />
@@ -142,7 +143,7 @@ export default function OnboardingPage({ onFinishOnboarding }) {
                     {slide.statValue}
                   </p>
                 </div>
-                <span className="text-2xl">⚡</span>
+                <span className="text-2xl animate-bounce">↓</span>
               </div>
 
             </div>
@@ -175,7 +176,7 @@ export default function OnboardingPage({ onFinishOnboarding }) {
       </div>
 
       {/* Bottom Navigation Control Bar */}
-      <div className="max-w-5xl mx-auto w-full flex items-center justify-between py-2">
+      <div className="max-w-5xl mx-auto w-full flex items-center justify-between py-2 z-20">
         <button
           onClick={handlePrev}
           disabled={currentSlideIndex === 0}
@@ -190,7 +191,7 @@ export default function OnboardingPage({ onFinishOnboarding }) {
         </button>
 
         <span className="text-xs font-extrabold text-[#173D28]">
-          Page {currentSlideIndex + 1} of 3
+          Page {currentSlideIndex + 1} of 3 (Slide Down View)
         </span>
 
         <button
@@ -198,7 +199,7 @@ export default function OnboardingPage({ onFinishOnboarding }) {
           className="sketch-button-accent px-6 py-3.5 rounded-2xl text-xs font-black flex items-center gap-2 shadow-[4px_4px_0px_#0B2418]"
         >
           <span>{slide.buttonText}</span>
-          <ArrowRight className="w-4 h-4" />
+          <ArrowDown className="w-4 h-4 animate-bounce" />
         </button>
       </div>
 
