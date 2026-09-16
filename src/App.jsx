@@ -19,8 +19,8 @@ import {
 
 export default function App() {
   // Navigation & Auth State
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [activeTab, setActiveTab] = useState("auth");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // App Data (Persisted in localStorage)
   const [user, setUser] = useState(() => {
