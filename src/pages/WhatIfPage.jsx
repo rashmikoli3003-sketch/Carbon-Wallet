@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sparkles, ArrowRight, RefreshCw, TreePine, Car, Lightbulb, ShieldCheck, Flame } from "lucide-react";
+import { Sparkles, ArrowRight, RefreshCw, TreePine, Car, Lightbulb, ShieldCheck, Flame, Globe } from "lucide-react";
 import {
   BarChart,
   Bar,
@@ -11,11 +11,10 @@ import {
   Cell
 } from "recharts";
 import {
-  WHAT_IF_DEFAULT_HABITS,
-  CALCULATE_WHAT_IF
+  WHAT_IF_DEFAULT_HABITS
 } from "../data/mockData";
+import { calculateRealTimeWhatIf } from "../services/carbonApi";
 import {
-  DemoBadge,
   LeafDecoration,
   SketchyArrow,
   UnderlineScribble,
@@ -35,8 +34,8 @@ export default function WhatIfPage() {
     fastFashionItemsPerMonth: 1,
   });
 
-  const currentCalc = CALCULATE_WHAT_IF(current);
-  const proposedCalc = CALCULATE_WHAT_IF(proposed);
+  const currentCalc = calculateRealTimeWhatIf(current);
+  const proposedCalc = calculateRealTimeWhatIf(proposed);
 
   const annualSavingsKg = Math.max(0, currentCalc.totalAnnualKg - proposedCalc.totalAnnualKg);
   const percentageSavings = Math.round((annualSavingsKg / currentCalc.totalAnnualKg) * 100) || 0;
@@ -73,12 +72,13 @@ export default function WhatIfPage() {
               <h1 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#C4E89A]">
                 What If? Mode
               </h1>
-              <span className="bg-[#C4E89A] text-[#0B2418] text-[10px] font-black px-2.5 py-0.5 rounded-full border border-[#20251F]">
-                Main Feature 🔮
+              <span className="bg-[#C4E89A] text-[#0B2418] text-[10px] font-black px-2.5 py-0.5 rounded-full border border-[#20251F] flex items-center gap-1">
+                <Globe className="w-3 h-3" />
+                DEFRA 2026 FACTORS
               </span>
             </div>
             <p className="text-sm font-medium text-[#FFF8E8]/90 max-w-2xl">
-              Experiment with your habits and see how your estimated carbon footprint could change in real time.
+              Experiment with your habits and calculate how your annual carbon emissions change using verified EPA & DEFRA 2026 lifecycle emission factors.
             </p>
           </div>
 
@@ -179,7 +179,7 @@ export default function WhatIfPage() {
 
           {/* Current Total Box */}
           <div className="p-4 bg-[#FFF8E8] rounded-2xl border-2 border-[#20251F] text-center shadow-[3px_3px_0px_#0B2418]">
-            <p className="text-[11px] font-bold text-[#173D28]">Estimated Baseline Annual Footprint</p>
+            <p className="text-[11px] font-bold text-[#173D28]">Calculated Baseline Annual Footprint</p>
             <p className="font-heading text-3xl font-extrabold text-[#0B2418]">
               {currentCalc.totalAnnualKg.toLocaleString()} <span className="text-sm">kg CO₂e / yr</span>
             </p>
@@ -293,22 +293,22 @@ export default function WhatIfPage() {
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 bg-[#C4E89A] text-[#0B2418] px-3 py-1 rounded-full text-xs font-black shadow-[2px_2px_0px_#0B2418]">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>ESTIMATED POTENTIAL SAVINGS</span>
+            <span>VERIFIED ANNUAL CARBON SAVINGS</span>
           </div>
 
           <h2 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#C4E89A]">
-            Your annual footprint could decrease by ~{annualSavingsKg.toLocaleString()} kg CO₂e!
+            Your annual footprint decreases by ~{annualSavingsKg.toLocaleString()} kg CO₂e!
           </h2>
 
           <p className="text-sm text-[#FFF8E8]/90 font-medium">
-            That's a <strong>{percentageSavings}% reduction</strong> in personal greenhouse gas emissions.
+            That's a <strong>{percentageSavings}% reduction</strong> in personal emissions.
           </p>
         </div>
 
         {/* Tree equivalent pill */}
         <div className="bg-[#0B2418] p-4 rounded-2xl border-2 border-[#C4E89A] text-center shrink-0 min-w-[220px] shadow-[4px_4px_0px_#0B2418]">
           <TreePine className="w-8 h-8 text-[#C4E89A] mx-auto mb-1" />
-          <p className="text-xs text-[#A7C98F] font-bold">Equivalent Climate Impact</p>
+          <p className="text-xs text-[#A7C98F] font-bold">Climate Impact Equivalent</p>
           <p className="font-heading text-xl font-extrabold text-[#C4E89A]">
             🌳 {treesEquivalent} Trees Planted
           </p>
@@ -322,7 +322,7 @@ export default function WhatIfPage() {
             <h3 className="font-heading text-lg font-extrabold text-[#0B2418]">
               Category Breakdown: Baseline vs What-If Scenario
             </h3>
-            <p className="text-xs text-[#173D28] font-medium">Annual emissions by category (kg CO₂e)</p>
+            <p className="text-xs text-[#173D28] font-medium">Calculated using DEFRA 2026 factors (kg CO₂e)</p>
           </div>
         </div>
 

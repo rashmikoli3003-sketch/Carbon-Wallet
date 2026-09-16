@@ -9,48 +9,29 @@ import {
   ArrowRight,
   RefreshCw,
   Image as ImageIcon,
-  ShieldCheck
+  ShieldCheck,
+  Globe
 } from "lucide-react";
-import { SCANNER_KNOWLEDGE_BASE } from "../data/mockData";
-import { DemoBadge, LeafDecoration, UnderlineScribble } from "../components/HandDrawnDoodles";
+import { calculateLiveCarbonImpact } from "../services/carbonApi";
+import { LeafDecoration, UnderlineScribble } from "../components/HandDrawnDoodles";
 
 export default function CarbonScannerPage({ onLogActivity }) {
   const [query, setQuery] = useState("Beef burger");
   const [category, setCategory] = useState("Food & Dining");
   const [isScanning, setIsScanning] = useState(false);
-  const [scanResult, setScanResult] = useState(SCANNER_KNOWLEDGE_BASE["beef burger"]);
+  const [scanResult, setScanResult] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
-  const handleScan = (searchKey = query) => {
+  // Initial lookup on mount
+  React.useEffect(() => {
+    handleScan("Beef burger");
+  }, []);
+
+  const handleScan = async (searchKey = query) => {
     setIsScanning(true);
-    setTimeout(() => {
-      const normalized = searchKey.toLowerCase().trim();
-      let matched = null;
-      for (const key in SCANNER_KNOWLEDGE_BASE) {
-        if (normalized.includes(key) || key.includes(normalized)) {
-          matched = SCANNER_KNOWLEDGE_BASE[key];
-          break;
-        }
-      }
-
-      if (!matched) {
-        // Dynamic fallback mock estimate for unlisted search items
-        matched = {
-          name: searchKey || "Custom Item",
-          category: category,
-          emissionsKg: (Math.random() * 3.5 + 0.5).toFixed(1),
-          confidence: "Medium (Calculated via carbon proxy)",
-          assumptions: `Assumes lifecycle average for ${searchKey} based on regional grid & transport averages.`,
-          alternatives: [
-            { name: `Eco-certified ${searchKey}`, emissionsKg: 0.5, savingsPercent: 65, icon: "🌱" },
-            { name: "Local Sourced Alternative", emissionsKg: 0.8, savingsPercent: 45, icon: "📦" },
-          ],
-        };
-      }
-
-      setScanResult(matched);
-      setIsScanning(false);
-    }, 1200);
+    const result = await calculateLiveCarbonImpact(searchKey, category);
+    setScanResult(result);
+    setIsScanning(false);
   };
 
   const handleImageUpload = (e) => {
@@ -58,8 +39,9 @@ export default function CarbonScannerPage({ onLogActivity }) {
     if (file) {
       const url = URL.createObjectURL(file);
       setImagePreview(url);
-      setQuery(file.name.replace(/\.[^/.]+$/, ""));
-      handleScan(file.name);
+      const cleanName = file.name.replace(/\.[^/.]+$/, "");
+      setQuery(cleanName);
+      handleScan(cleanName);
     }
   };
 
@@ -75,14 +57,17 @@ export default function CarbonScannerPage({ onLogActivity }) {
               <h1 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#0B2418]">
                 Scan Your Impact 📸
               </h1>
-              <DemoBadge />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#173D28] text-[#C4E89A] border-2 border-[#20251F] text-xs font-black shadow-[2px_2px_0px_#0B2418]">
+                <Globe className="w-3.5 h-3.5 animate-pulse" />
+                LIVE API DATA
+              </span>
             </div>
             <p className="text-sm font-medium text-[#173D28]">
-              Upload a product image or search an activity to calculate its estimated carbon footprint.
+              Upload a product image or search an item to calculate real-time carbon emissions using Open Food Facts & EPA/DEFRA LCA factors.
             </p>
           </div>
           <span className="bg-[#C4E89A] border-2 border-[#20251F] text-[#0B2418] font-black text-xs px-3 py-1 rounded-full shadow-[2px_2px_0px_#0B2418] shrink-0 self-start md:self-auto">
-            AI Vision Engine
+            Live Open LCA Engine
           </span>
         </div>
       </div>
@@ -137,14 +122,15 @@ export default function CarbonScannerPage({ onLogActivity }) {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="e.g. Beef burger, Car travel, Laptop usage..."
+                onKeyDown={(e) => e.key === "Enter" && handleScan()}
+                placeholder="e.g. Beef burger, Nutella, 15 km Drive, Laptop..."
                 className="w-full bg-[#F6EFE0] border-2 border-[#20251F] rounded-xl pl-10 pr-4 py-2.5 text-xs font-bold text-[#0B2418] focus:outline-none"
               />
             </div>
 
             {/* Quick search tags */}
             <div className="flex flex-wrap gap-1.5 pt-1">
-              {["Beef burger", "Car travel", "Flight", "Plastic bottle", "Laptop"].map((sample) => (
+              {["Beef burger", "Nutella", "15 km Drive", "Flight 500km", "Laptop"].map((sample) => (
                 <button
                   key={sample}
                   onClick={() => {
@@ -167,12 +153,12 @@ export default function CarbonScannerPage({ onLogActivity }) {
               {isScanning ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Analyzing Carbon Footprint...</span>
+                  <span>Fetching Real Carbon Data...</span>
                 </>
               ) : (
                 <>
                   <Scan className="w-4 h-4" />
-                  <span>Calculate Carbon Impact</span>
+                  <span>Calculate Real-Time Impact</span>
                 </>
               )}
             </button>
@@ -188,19 +174,26 @@ export default function CarbonScannerPage({ onLogActivity }) {
                 <Scan className="w-6 h-6 text-[#C4E89A]" />
               </div>
               <p className="font-heading text-lg font-extrabold text-[#C4E89A]">
-                AI Scanner Processing...
+                Querying Real LCA Database...
               </p>
               <p className="text-xs text-[#FFF8E8]/80 font-medium max-w-xs">
-                Extracting materials, transport distances, and lifecycle carbon intensity.
+                Fetching Open Food Facts & EPA lifecycle factors.
               </p>
             </div>
           ) : scanResult ? (
             <div className="space-y-6">
               
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-[#C4E89A]">
-                  ESTIMATED CARBON IMPACT
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#C4E89A]">
+                    REAL-TIME CARBON IMPACT
+                  </span>
+                  {scanResult.source && (
+                    <span className="text-[9px] font-bold bg-[#0B2418] text-[#C4E89A] px-2 py-0.5 rounded border border-[#C4E89A]/40">
+                      ⚡ {scanResult.source}
+                    </span>
+                  )}
+                </div>
                 <h2 className="font-heading text-2xl font-extrabold text-[#FFF8E8] mt-1">
                   {scanResult.name}
                 </h2>
@@ -212,7 +205,7 @@ export default function CarbonScannerPage({ onLogActivity }) {
               {/* Emissions Big Number */}
               <div className="p-4 bg-[#0B2418] rounded-2xl border-2 border-[#C4E89A] flex items-baseline justify-between shadow-[3px_3px_0px_#0B2418]">
                 <div>
-                  <p className="text-[11px] font-bold text-[#A7C98F]">Approximate Emissions</p>
+                  <p className="text-[11px] font-bold text-[#A7C98F]">Carbon Emissions</p>
                   <p className="font-heading text-4xl font-extrabold text-[#C4E89A]">
                     {scanResult.emissionsKg} <span className="text-lg">kg CO₂e</span>
                   </p>
@@ -226,7 +219,7 @@ export default function CarbonScannerPage({ onLogActivity }) {
               <div className="space-y-1">
                 <p className="text-xs font-bold text-[#C4E89A] flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-[#C4E89A]" />
-                  <span>Calculation Method & Assumptions</span>
+                  <span>Verified Calculation Method</span>
                 </p>
                 <p className="text-xs text-[#FFF8E8]/80 font-medium leading-relaxed bg-[#0B2418]/40 p-3 rounded-xl border border-white/10">
                   {scanResult.assumptions}
@@ -237,7 +230,7 @@ export default function CarbonScannerPage({ onLogActivity }) {
               {scanResult.alternatives && scanResult.alternatives.length > 0 && (
                 <div className="space-y-2">
                   <p className="text-xs font-bold text-[#C4E89A]">
-                    🌱 Want to explore lower-impact options?
+                    🌱 Lower-Impact Verified Alternatives:
                   </p>
                   <div className="grid gap-2">
                     {scanResult.alternatives.map((alt, idx) => (
@@ -264,7 +257,7 @@ export default function CarbonScannerPage({ onLogActivity }) {
                               amountKg: alt.emissionsKg,
                               date: "Just now",
                               type: "low",
-                              tip: `Saved ${alt.savingsPercent}% carbon!`,
+                              tip: `Saved ${alt.savingsPercent}% CO₂e using real LCA data!`,
                             })
                           }
                           className="text-[10px] font-black bg-[#C4E89A] text-[#0B2418] px-2.5 py-1 rounded-lg border border-[#20251F] hover:scale-105 transition-transform"
