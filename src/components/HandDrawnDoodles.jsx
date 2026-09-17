@@ -99,13 +99,5 @@ export const StarDoodle = ({ className = "w-5 h-5 text-[#173D28]" }) => (
   </motion.svg>
 );
 
-export const DemoBadge = () => (
-  <motion.span
-    whileHover={{ scale: 1.05 }}
-    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF8E8] border-2 border-[#20251F] text-xs font-bold text-[#173D28] shadow-[2px_2px_0px_#0B2418]"
-  >
-    <span className="w-2 h-2 rounded-full bg-[#173D28] animate-ping" />
-    DEMO DATA
-  </motion.span>
-);
+export const DemoBadge = () => null;
 

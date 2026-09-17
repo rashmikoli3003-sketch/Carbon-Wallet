@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Bot, User, Sparkles, RefreshCw, MessageSquare, ShieldCheck } from "lucide-react";
 import { MOCK_BOT_RESPONSES } from "../data/mockData";
-import { DemoBadge, LeafDecoration } from "../components/HandDrawnDoodles";
+import { LeafDecoration } from "../components/HandDrawnDoodles";
 
 export default function EcoAIChatbotPage({ user, budget, activities }) {
   const [messages, setMessages] = useState([
@@ -91,7 +91,6 @@ export default function EcoAIChatbotPage({ user, budget, activities }) {
               <h1 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#0B2418]">
                 EcoAI Assistant 🌿
               </h1>
-              <DemoBadge />
             </div>
             <p className="text-sm font-medium text-[#173D28]">
               Your personal AI climate advisor. Ask questions and get customized carbon advice.

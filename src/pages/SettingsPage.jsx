@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { User, MapPin, Key, RefreshCw, Save, ShieldCheck, CheckCircle2 } from "lucide-react";
-import { DemoBadge, LeafDecoration } from "../components/HandDrawnDoodles";
+import { LeafDecoration } from "../components/HandDrawnDoodles";
 
 export default function SettingsPage({
   user,
@@ -36,10 +36,9 @@ export default function SettingsPage({
               Account Settings ⚙️
             </h1>
             <p className="text-sm font-medium text-[#173D28]">
-              Manage your personal profile, carbon budget goal, and demo data options.
+              Manage your personal profile, carbon budget goal, and app options.
             </p>
           </div>
-          <DemoBadge />
         </div>
       </div>
 
@@ -146,14 +145,14 @@ export default function SettingsPage({
           <button
             type="button"
             onClick={() => {
-              if (confirm("Reset demo local storage data?")) {
+              if (confirm("Reset local storage data?")) {
                 onResetData();
               }
             }}
             className="sketch-button bg-[#FFF8E8] text-red-700 px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
-            <span>Reset Demo Data</span>
+            <span>Reset Wallet Data</span>
           </button>
 
           <button

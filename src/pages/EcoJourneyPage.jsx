@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Award, Flame, CheckCircle, Lock, Trophy, Sparkles, Coins, Plus } from "lucide-react";
 import confetti from "canvas-confetti";
 import { ECO_CHALLENGES, ECO_BADGES } from "../data/mockData";
-import { DemoBadge, LeafDecoration, StarDoodle } from "../components/HandDrawnDoodles";
+import { LeafDecoration, StarDoodle } from "../components/HandDrawnDoodles";
 
 export default function EcoJourneyPage({ points, streak, onAddPoints }) {
   const [challenges, setChallenges] = React.useState(ECO_CHALLENGES);
@@ -54,7 +54,6 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
               <h1 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#C4E89A]">
                 Your Eco Journey 🌱
               </h1>
-              <DemoBadge />
             </div>
             <p className="text-sm font-medium text-[#FFF8E8]/90">
               Earn Eco Points by logging low-carbon choices and completing weekly sustainability challenges.

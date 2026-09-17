@@ -297,7 +297,7 @@ export default function LandingPage({ onStartJourney, onExploreFeatures, onNavig
               <div className="md:col-span-6 p-6 rounded-2xl bg-[#07110B] border border-[#8EBB91]/30 space-y-4">
                 <div className="flex items-center justify-between text-xs font-mono text-[#8EBB91]">
                   <span>SEPTEMBER BUDGET</span>
-                  <span className="text-[#B8F56B] bg-[#0D2116] px-2 py-0.5 rounded border border-[#B8F56B]/30">DEMO ESTIMATE</span>
+                  <span className="text-[#B8F56B] bg-[#0D2116] px-2 py-0.5 rounded border border-[#B8F56B]/30">MONTHLY ESTIMATE</span>
                 </div>
                 <div>
                   <span className="font-heading text-5xl font-extrabold text-[#B8F56B]">100</span>

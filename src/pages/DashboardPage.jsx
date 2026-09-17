@@ -26,7 +26,6 @@ import {
   CartesianGrid
 } from "recharts";
 import {
-  DemoBadge,
   LeafDecoration,
   UnderlineScribble,
   StarDoodle,
@@ -102,7 +101,6 @@ export default function DashboardPage({
             <h1 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#0B2418]">
               Good morning, {user.name.split(" ")[0]} 🌱
             </h1>
-            <DemoBadge />
           </div>
           <p className="text-sm font-medium text-[#173D28]">
             Small steps. Meaningful impact. Here is your personal carbon budget overview.
@@ -152,7 +150,7 @@ export default function DashboardPage({
                 YOUR MONTHLY CARBON BUDGET ({budget.period})
               </span>
               <span className="text-[10px] font-bold bg-[#C4E89A] text-[#0B2418] px-2 py-0.5 rounded-md">
-                DEMO ESTIMATE
+                MONTHLY ESTIMATE
               </span>
             </div>
 
@@ -275,7 +273,6 @@ export default function DashboardPage({
               </h3>
               <p className="text-xs text-[#173D28] font-medium">Estimated carbon distribution</p>
             </div>
-            <DemoBadge />
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4 items-center">

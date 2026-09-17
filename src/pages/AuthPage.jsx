@@ -68,7 +68,7 @@ export default function AuthPage({ onLoginSuccess }) {
               </span>
             </div>
             <span className="bg-[#B8F56B]/15 text-[#B8F56B] text-[10px] font-mono font-bold px-2.5 py-1 rounded-full border border-[#B8F56B]/30">
-              DEMO AUTH
+              LIVE SESSION
             </span>
           </div>
 
@@ -80,7 +80,7 @@ export default function AuthPage({ onLoginSuccess }) {
           {/* Bottom Note */}
           <div className="flex items-center gap-2 text-xs font-mono text-[#8EBB91] bg-[#07110B]/60 p-3 rounded-xl border border-[#8EBB91]/20">
             <ShieldCheck className="w-4 h-4 text-[#B8F56B] shrink-0" />
-            <span>Secure Demo Session • Fast Interactive Access</span>
+            <span>Secure Interactive Session • Fast Instant Access</span>
           </div>
         </div>
 
