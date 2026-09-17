@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import OnboardingPage from "./pages/OnboardingPage";
 import LandingPage from "./pages/LandingPage";
 import AuthPage from "./pages/AuthPage";
 import DashboardPage from "./pages/DashboardPage";
@@ -20,8 +19,8 @@ import {
 } from "./data/mockData";
 
 export default function App() {
-  // Navigation & Auth State (Starts on Onboarding Intro Slide 1 -> Slide 2 -> Slide 3 -> Login Page!)
-  const [activeTab, setActiveTab] = useState("onboarding");
+  // Navigation & Auth State (Opens directly on LandingPage - Image 3)
+  const [activeTab, setActiveTab] = useState("landing");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // App Data (Persisted in localStorage)
@@ -117,7 +116,7 @@ export default function App() {
     setCategories(IMPACT_CATEGORIES);
     setActivities(INITIAL_ACTIVITIES);
     setPoints(145);
-    setActiveTab("onboarding");
+    setActiveTab("landing");
   };
 
   // Auth Handlers
@@ -135,8 +134,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#07110B] flex flex-col font-sans text-[#F4F2E8]">
       
-      {/* Show Navbar on main screens */}
-      {activeTab !== "onboarding" && (
+      {/* Show Navbar on main app dashboard screens (not on landing page which has its own header) */}
+      {activeTab !== "landing" && activeTab !== "auth" && (
         <Navbar
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -158,12 +157,11 @@ export default function App() {
           transition={{ duration: 0.25, ease: "easeInOut" }}
           className="flex-1 flex flex-col min-h-0"
         >
-          {activeTab === "onboarding" ? (
-            <OnboardingPage onFinishOnboarding={() => setActiveTab("auth")} />
-          ) : activeTab === "landing" ? (
+          {activeTab === "landing" ? (
             <LandingPage
               onStartJourney={() => setActiveTab(isLoggedIn ? "dashboard" : "auth")}
               onExploreFeatures={() => setActiveTab("what-if")}
+              onNavigateAuth={() => setActiveTab("auth")}
             />
           ) : activeTab === "auth" ? (
             <AuthPage onLoginSuccess={handleLoginSuccess} />
