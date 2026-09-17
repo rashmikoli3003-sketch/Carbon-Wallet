@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { Award, Flame, CheckCircle, Lock, Trophy, Sparkles, Coins, Plus } from "lucide-react";
 import confetti from "canvas-confetti";
 import { ECO_CHALLENGES, ECO_BADGES } from "../data/mockData";
@@ -36,7 +37,12 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
   const progressToNextLevel = (points % 50) * 2;
 
   return (
-    <div className="space-y-8 p-4 lg:p-8 max-w-7xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="space-y-8 p-4 lg:p-8 max-w-7xl mx-auto"
+    >
       
       {/* Header Banner */}
       <div className="bg-[#173D28] text-[#FFF8E8] p-6 lg:p-8 rounded-3xl border-3 border-[#20251F] shadow-[8px_8px_0px_#0B2418] relative overflow-hidden">
@@ -44,7 +50,7 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-2xl">🏆</span>
+              <span className="text-2xl animate-bounce">🏆</span>
               <h1 className="font-heading text-2xl lg:text-3xl font-extrabold text-[#C4E89A]">
                 Your Eco Journey 🌱
               </h1>
@@ -58,22 +64,28 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
           {/* Level & Streak Pill Cards */}
           <div className="flex items-center gap-3 shrink-0">
             {/* Streak Counter */}
-            <div className="sketch-card bg-[#FFF8E8] text-[#0B2418] p-3.5 rounded-2xl flex items-center gap-2 border-2 border-[#20251F]">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="sketch-card bg-[#FFF8E8] text-[#0B2418] p-3.5 rounded-2xl flex items-center gap-2 border-2 border-[#20251F]"
+            >
               <Flame className="w-6 h-6 text-amber-600 fill-amber-500 animate-bounce" />
               <div>
                 <p className="text-[10px] font-black uppercase text-[#173D28]">Daily Streak</p>
                 <p className="font-heading text-lg font-extrabold">{streak} Days 🔥</p>
               </div>
-            </div>
+            </motion.div>
 
             {/* Total Eco Points */}
-            <div className="sketch-card bg-[#C4E89A] text-[#0B2418] p-3.5 rounded-2xl flex items-center gap-2 border-2 border-[#20251F]">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="sketch-card bg-[#C4E89A] text-[#0B2418] p-3.5 rounded-2xl flex items-center gap-2 border-2 border-[#20251F]"
+            >
               <Coins className="w-6 h-6 text-[#173D28]" />
               <div>
                 <p className="text-[10px] font-black uppercase text-[#0B2418]">Total Balance</p>
                 <p className="font-heading text-lg font-extrabold">{points} EcoPts</p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
@@ -84,9 +96,11 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
             <span>{points % 50} / 50 Pts to Level {level + 1}</span>
           </div>
           <div className="w-full h-4 rounded-full bg-[#0B2418] border-2 border-[#C4E89A] p-0.5 overflow-hidden">
-            <div
-              className="h-full rounded-full bg-[#C4E89A] transition-all duration-700"
-              style={{ width: `${progressToNextLevel}%` }}
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${progressToNextLevel}%` }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="h-full rounded-full bg-[#C4E89A]"
             />
           </div>
         </div>
@@ -100,7 +114,9 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
         </h3>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => {
               onAddPoints(20);
               triggerConfetti();
@@ -110,9 +126,11 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
             <span className="text-2xl">🚲</span>
             <p className="font-heading text-xs font-extrabold text-[#0B2418] mt-2">Log Cycling Trip</p>
             <span className="text-xs font-black text-emerald-800">+20 EcoPts</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => {
               onAddPoints(10);
               triggerConfetti();
@@ -122,9 +140,11 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
             <span className="text-2xl">🚌</span>
             <p className="font-heading text-xs font-extrabold text-[#0B2418] mt-2">Log Public Transit</p>
             <span className="text-xs font-black text-emerald-800">+10 EcoPts</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => {
               onAddPoints(15);
               triggerConfetti();
@@ -134,9 +154,11 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
             <span className="text-2xl">🥗</span>
             <p className="font-heading text-xs font-extrabold text-[#0B2418] mt-2">Log Plant Meal</p>
             <span className="text-xs font-black text-emerald-800">+15 EcoPts</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => {
               onAddPoints(10);
               triggerConfetti();
@@ -146,7 +168,7 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
             <span className="text-2xl">♻️</span>
             <p className="font-heading text-xs font-extrabold text-[#0B2418] mt-2">Recycling Challenge</p>
             <span className="text-xs font-black text-emerald-800">+10 EcoPts</span>
-          </button>
+          </motion.button>
         </div>
       </div>
 
@@ -162,13 +184,15 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
 
           <div className="space-y-3">
             {challenges.map((ch) => (
-              <div
+              <motion.div
                 key={ch.id}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => handleToggleChallenge(ch.id, ch.points)}
                 className={`p-4 rounded-2xl border-2 border-[#20251F] flex items-center justify-between cursor-pointer transition-all ${
                   ch.completed
                     ? "bg-[#C4E89A] text-[#0B2418] shadow-[2.5px_2.5px_0px_#0B2418]"
-                    : "bg-[#FFF8E8] text-[#20251F] shadow-[2.5px_2.5px_0px_#0B2418] hover:translate-x-1"
+                    : "bg-[#FFF8E8] text-[#20251F] shadow-[2.5px_2.5px_0px_#0B2418]"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -195,7 +219,7 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
                     {ch.completed && <CheckCircle className="w-4 h-4" />}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -209,8 +233,9 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
 
           <div className="grid grid-cols-2 gap-3">
             {ECO_BADGES.map((badge) => (
-              <div
+              <motion.div
                 key={badge.id}
+                whileHover={badge.unlocked ? { scale: 1.06, rotate: 2 } : { scale: 1.02 }}
                 className={`p-3 rounded-2xl border-2 border-[#20251F] text-center flex flex-col items-center justify-between ${
                   badge.unlocked
                     ? "bg-[#F6EFE0] shadow-[3px_3px_0px_#0B2418]"
@@ -229,13 +254,14 @@ export default function EcoJourneyPage({ points, streak, onAddPoints }) {
                 <p className="text-[10px] text-[#173D28] font-medium mt-1">
                   {badge.desc}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
       </div>
 
-    </div>
+    </motion.div>
   );
 }
+

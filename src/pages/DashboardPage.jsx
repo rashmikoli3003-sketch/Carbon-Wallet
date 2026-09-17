@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   PieChart as PieIcon,
   BarChart3,
@@ -89,7 +90,12 @@ export default function DashboardPage({
     <div className="space-y-8 p-4 lg:p-8 max-w-7xl mx-auto">
       
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#F6EFE0] p-6 rounded-3xl border-3 border-[#20251F] shadow-[6px_6px_0px_#0B2418] relative overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#F6EFE0] p-6 rounded-3xl border-3 border-[#20251F] shadow-[6px_6px_0px_#0B2418] relative overflow-hidden"
+      >
         <LeafDecoration className="absolute -top-3 -right-3 w-16 h-16 text-[#A7C98F]/40" />
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -105,28 +111,38 @@ export default function DashboardPage({
 
         {/* Quick Action buttons */}
         <div className="flex items-center gap-3 shrink-0">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => onNavigateTab("scanner")}
             className="sketch-button bg-[#FFF8E8] px-4 py-2.5 rounded-2xl text-xs font-black text-[#0B2418] flex items-center gap-2"
           >
             <Scan className="w-4 h-4 text-[#173D28]" />
             <span>Scan Product</span>
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => onNavigateTab("what-if")}
             className="sketch-button-accent px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4" />
             <span>What-If Mode 🔮</span>
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Main Budget Card */}
       <div className="grid lg:grid-cols-12 gap-6">
         
         {/* Left 7 cols: Budget Wallet Container */}
-        <div className="lg:col-span-7 sketch-card bg-[#173D28] text-[#FFF8E8] p-6 lg:p-8 border-[#C4E89A] relative overflow-hidden flex flex-col justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.1 }}
+          whileHover={{ y: -3 }}
+          className="lg:col-span-7 sketch-card bg-[#173D28] text-[#FFF8E8] p-6 lg:p-8 border-[#C4E89A] relative overflow-hidden flex flex-col justify-between"
+        >
           <LeafDecoration className="absolute top-4 right-4 w-16 h-16 text-[#C4E89A]/20" />
           
           <div>
@@ -141,9 +157,14 @@ export default function DashboardPage({
             </div>
 
             <div className="flex items-baseline gap-3 my-2">
-              <span className="font-heading text-5xl lg:text-6xl font-extrabold text-[#C4E89A]">
+              <motion.span
+                key={budget.monthlyLimitKg}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="font-heading text-5xl lg:text-6xl font-extrabold text-[#C4E89A]"
+              >
                 {budget.monthlyLimitKg}
-              </span>
+              </motion.span>
               <span className="text-lg font-bold text-[#FFF8E8]/90">
                 kg CO₂e / month limit
               </span>
@@ -161,9 +182,11 @@ export default function DashboardPage({
               </div>
 
               <div className="w-full h-5 rounded-full bg-[#0B2418] border-2 border-[#C4E89A] p-0.5 overflow-hidden relative">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#A7C98F] to-[#C4E89A] transition-all duration-1000 ease-out"
-                  style={{ width: `${percentageUsed}%` }}
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${percentageUsed}%` }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                  className="h-full rounded-full bg-gradient-to-r from-[#A7C98F] to-[#C4E89A]"
                 />
               </div>
             </div>
@@ -173,14 +196,20 @@ export default function DashboardPage({
           <div className="mt-6 pt-4 border-t border-[#C4E89A]/20 flex items-center gap-3 bg-[#0B2418]/60 p-3.5 rounded-2xl border border-[#C4E89A]/30">
             <span className="text-2xl">💡</span>
             <p className="text-xs font-medium text-[#FFF8E8]/90">
-              <strong>What this means:</strong> You have used <strong>63%</strong> of your carbon allowance for September. Staying under 100 kg keeps your personal emissions aligned with Paris Climate targets.
+              <strong>What this means:</strong> You have used <strong>{percentageUsed}%</strong> of your carbon allowance for September. Staying under 100 kg keeps your personal emissions aligned with Paris Climate targets.
             </p>
           </div>
 
-        </div>
+        </motion.div>
 
         {/* Right 5 cols: Circular Gauge & Quick Stats */}
-        <div className="lg:col-span-5 sketch-card bg-[#F6EFE0] p-6 flex flex-col items-center justify-center text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.15 }}
+          whileHover={{ y: -3 }}
+          className="lg:col-span-5 sketch-card bg-[#F6EFE0] p-6 flex flex-col items-center justify-center text-center"
+        >
           <h3 className="font-heading text-sm font-extrabold text-[#0B2418] uppercase tracking-wider mb-2">
             Wallet Capacity Gauge
           </h3>
@@ -196,17 +225,18 @@ export default function DashboardPage({
                 strokeWidth="12"
                 fill="transparent"
               />
-              <circle
+              <motion.circle
                 cx="50"
                 cy="50"
                 r="40"
                 stroke="#173D28"
                 strokeWidth="12"
                 strokeDasharray={2 * Math.PI * 40}
-                strokeDashoffset={2 * Math.PI * 40 * (1 - percentageUsed / 100)}
+                initial={{ strokeDashoffset: 2 * Math.PI * 40 }}
+                animate={{ strokeDashoffset: 2 * Math.PI * 40 * (1 - percentageUsed / 100) }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
                 strokeLinecap="round"
                 fill="transparent"
-                className="transition-all duration-1000 ease-out"
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -217,10 +247,13 @@ export default function DashboardPage({
             </div>
           </div>
 
-          <div className="mt-2 text-xs font-bold text-[#173D28] bg-[#FFF8E8] px-3 py-1.5 rounded-xl border-2 border-[#20251F]">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="mt-2 text-xs font-bold text-[#173D28] bg-[#FFF8E8] px-3 py-1.5 rounded-xl border-2 border-[#20251F]"
+          >
             Status: <span className="text-emerald-700">Healthy Carbon Spending 🌿</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
       </div>
 
@@ -228,7 +261,12 @@ export default function DashboardPage({
       <div className="grid lg:grid-cols-12 gap-6">
         
         {/* Category Breakdown (Pie chart & list) */}
-        <div className="lg:col-span-6 sketch-card bg-[#FFF8E8] p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.2 }}
+          className="lg:col-span-6 sketch-card bg-[#FFF8E8] p-6"
+        >
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="font-heading text-lg font-extrabold text-[#0B2418] flex items-center gap-2">
@@ -272,7 +310,11 @@ export default function DashboardPage({
 
             <div className="space-y-2.5">
               {categories.map((cat) => (
-                <div key={cat.id} className="flex items-center justify-between p-2 rounded-xl bg-[#F6EFE0] border-1.5 border-[#20251F]">
+                <motion.div
+                  key={cat.id}
+                  whileHover={{ x: 3, scale: 1.02 }}
+                  className="flex items-center justify-between p-2 rounded-xl bg-[#F6EFE0] border-1.5 border-[#20251F]"
+                >
                   <div className="flex items-center gap-2">
                     <span className="text-lg">{cat.icon}</span>
                     <span className="text-xs font-bold text-[#0B2418]">{cat.name}</span>
@@ -280,14 +322,19 @@ export default function DashboardPage({
                   <span className="text-xs font-extrabold text-[#173D28]">
                     {cat.usedKg} kg ({cat.percentage}%)
                   </span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Bar comparison */}
-        <div className="lg:col-span-6 sketch-card bg-[#FFF8E8] p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.25 }}
+          className="lg:col-span-6 sketch-card bg-[#FFF8E8] p-6"
+        >
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="font-heading text-lg font-extrabold text-[#0B2418] flex items-center gap-2">
@@ -316,12 +363,17 @@ export default function DashboardPage({
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </motion.div>
 
       </div>
 
       {/* Recent Activities Feed & Modal Trigger */}
-      <div className="sketch-card bg-[#F6EFE0] p-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.3 }}
+        className="sketch-card bg-[#F6EFE0] p-6"
+      >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
             <h3 className="font-heading text-xl font-extrabold text-[#0B2418] flex items-center gap-2">
@@ -332,13 +384,15 @@ export default function DashboardPage({
             </p>
           </div>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setShowAddModal(true)}
             className="sketch-button-accent px-4 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 shrink-0 self-start sm:self-auto"
           >
             <Plus className="w-4 h-4" />
             <span>Log Activity</span>
-          </button>
+          </motion.button>
         </div>
 
         {/* Activities List */}
@@ -348,126 +402,146 @@ export default function DashboardPage({
               No recent carbon activities logged yet.
             </p>
           ) : (
-            activities.map((act) => (
-              <div
-                key={act.id}
-                className="flex items-center justify-between p-3.5 bg-[#FFF8E8] rounded-2xl border-2 border-[#20251F] shadow-[2.5px_2.5px_0px_#0B2418] hover:translate-x-1 transition-transform"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#F6EFE0] border-2 border-[#20251F] flex items-center justify-center text-xl shrink-0">
-                    {act.icon}
-                  </div>
-                  <div>
-                    <h4 className="font-heading font-extrabold text-xs text-[#0B2418]">
-                      {act.title}
-                    </h4>
-                    <div className="flex items-center gap-2 text-[11px] text-[#173D28]">
-                      <span className="font-bold">{act.category}</span>
-                      <span>•</span>
-                      <span>{act.date}</span>
+            <AnimatePresence>
+              {activities.map((act) => (
+                <motion.div
+                  key={act.id}
+                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  whileHover={{ scale: 1.01, x: 4 }}
+                  className="flex items-center justify-between p-3.5 bg-[#FFF8E8] rounded-2xl border-2 border-[#20251F] shadow-[2.5px_2.5px_0px_#0B2418]"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#F6EFE0] border-2 border-[#20251F] flex items-center justify-center text-xl shrink-0">
+                      {act.icon}
+                    </div>
+                    <div>
+                      <h4 className="font-heading font-extrabold text-xs text-[#0B2418]">
+                        {act.title}
+                      </h4>
+                      <div className="flex items-center gap-2 text-[11px] text-[#173D28]">
+                        <span className="font-bold">{act.category}</span>
+                        <span>•</span>
+                        <span>{act.date}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="text-right">
-                    <span className="text-xs font-black text-[#0B2418] bg-[#C4E89A] px-2.5 py-1 rounded-lg border border-[#20251F]">
-                      +{act.amountKg} kg CO₂e
-                    </span>
-                    <p className="text-[10px] font-handwritten font-bold text-[#173D28] mt-0.5">
-                      {act.tip}
-                    </p>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      <span className="text-xs font-black text-[#0B2418] bg-[#C4E89A] px-2.5 py-1 rounded-lg border border-[#20251F]">
+                        +{act.amountKg} kg CO₂e
+                      </span>
+                      <p className="text-[10px] font-handwritten font-bold text-[#173D28] mt-0.5">
+                        {act.tip}
+                      </p>
+                    </div>
+                    <motion.button
+                      whileHover={{ scale: 1.2, rotate: 10 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => onDeleteActivity(act.id)}
+                      className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Delete item"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </motion.button>
                   </div>
-                  <button
-                    onClick={() => onDeleteActivity(act.id)}
-                    className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Delete item"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ))
+                </motion.div>
+              ))}
+            </AnimatePresence>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* Log Activity Modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 z-50 bg-[#0B2418]/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="sketch-card bg-[#FFF8E8] max-w-md w-full p-6 border-3 border-[#20251F] shadow-[8px_8px_0px_#0B2418] animate-in fade-in zoom-in-95">
-            <h3 className="font-heading text-xl font-extrabold text-[#0B2418] mb-1">
-              Log Carbon Activity 🌱
-            </h3>
-            <p className="text-xs font-medium text-[#173D28] mb-4">
-              Add a new item to your carbon budget.
-            </p>
+      <AnimatePresence>
+        {showAddModal && (
+          <div className="fixed inset-0 z-50 bg-[#0B2418]/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="sketch-card bg-[#FFF8E8] max-w-md w-full p-6 border-3 border-[#20251F] shadow-[8px_8px_0px_#0B2418]"
+            >
+              <h3 className="font-heading text-xl font-extrabold text-[#0B2418] mb-1">
+                Log Carbon Activity 🌱
+              </h3>
+              <p className="text-xs font-medium text-[#173D28] mb-4">
+                Add a new item to your carbon budget.
+              </p>
 
-            <form onSubmit={handleCreateActivity} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-[#0B2418] mb-1">
-                  Activity Title
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder="e.g. 20 km Bus Commute"
-                  className="w-full bg-[#F6EFE0] border-2 border-[#20251F] rounded-xl px-3 py-2 text-xs font-bold text-[#0B2418] focus:outline-none"
-                />
-              </div>
+              <form onSubmit={handleCreateActivity} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-[#0B2418] mb-1">
+                    Activity Title
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    placeholder="e.g. 20 km Bus Commute"
+                    className="w-full bg-[#F6EFE0] border-2 border-[#20251F] rounded-xl px-3 py-2 text-xs font-bold text-[#0B2418] focus:outline-none"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-xs font-bold text-[#0B2418] mb-1">
-                  Category
-                </label>
-                <select
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                  className="w-full bg-[#F6EFE0] border-2 border-[#20251F] rounded-xl px-3 py-2 text-xs font-bold text-[#0B2418] focus:outline-none"
-                >
-                  <option value="Transport">🚗 Transport</option>
-                  <option value="Food">🍔 Food & Dining</option>
-                  <option value="Energy">⚡ Energy & Utilities</option>
-                  <option value="Shopping">🛍️ Shopping & Goods</option>
-                </select>
-              </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#0B2418] mb-1">
+                    Category
+                  </label>
+                  <select
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    className="w-full bg-[#F6EFE0] border-2 border-[#20251F] rounded-xl px-3 py-2 text-xs font-bold text-[#0B2418] focus:outline-none"
+                  >
+                    <option value="Transport">🚗 Transport</option>
+                    <option value="Food">🍔 Food & Dining</option>
+                    <option value="Energy">⚡ Energy & Utilities</option>
+                    <option value="Shopping">🛍️ Shopping & Goods</option>
+                  </select>
+                </div>
 
-              <div>
-                <label className="block text-xs font-bold text-[#0B2418] mb-1">
-                  Estimated CO₂e (kg)
-                </label>
-                <input
-                  type="number"
-                  step="0.1"
-                  required
-                  value={newAmount}
-                  onChange={(e) => setNewAmount(e.target.value)}
-                  className="w-full bg-[#F6EFE0] border-2 border-[#20251F] rounded-xl px-3 py-2 text-xs font-bold text-[#0B2418] focus:outline-none"
-                />
-              </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#0B2418] mb-1">
+                    Estimated CO₂e (kg)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    required
+                    value={newAmount}
+                    onChange={(e) => setNewAmount(e.target.value)}
+                    className="w-full bg-[#F6EFE0] border-2 border-[#20251F] rounded-xl px-3 py-2 text-xs font-bold text-[#0B2418] focus:outline-none"
+                  />
+                </div>
 
-              <div className="flex items-center justify-end gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowAddModal(false)}
-                  className="sketch-button bg-[#F6EFE0] px-4 py-2 rounded-xl text-xs font-bold"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="sketch-button-accent px-4 py-2 rounded-xl text-xs font-black"
-                >
-                  Save Activity
-                </button>
-              </div>
-            </form>
+                <div className="flex items-center justify-end gap-3 pt-2">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                    onClick={() => setShowAddModal(false)}
+                    className="sketch-button bg-[#F6EFE0] px-4 py-2 rounded-xl text-xs font-bold"
+                  >
+                    Cancel
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="submit"
+                    className="sketch-button-accent px-4 py-2 rounded-xl text-xs font-black"
+                  >
+                    Save Activity
+                  </motion.button>
+                </div>
+              </form>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
 
     </div>
   );
 }
+

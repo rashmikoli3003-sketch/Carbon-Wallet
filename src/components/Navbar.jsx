@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
   PieChart,
@@ -14,7 +15,6 @@ import {
   Leaf,
   Coins
 } from "lucide-react";
-import { LeafDecoration } from "./HandDrawnDoodles";
 
 export const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -38,65 +38,71 @@ export default function Navbar({
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-[#FFF8E8]/95 backdrop-blur-md border-b-2 border-[#20251F] px-4 lg:px-8 py-3.5 transition-all">
+    <header className="sticky top-0 z-40 bg-[#07110B]/90 backdrop-blur-md border-b border-[#8EBB91]/15 px-4 lg:px-8 py-3.5 transition-all text-[#F4F2E8]">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         {/* Logo */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.96 }}
           onClick={() => setActiveTab(isLoggedIn ? "dashboard" : "landing")}
           className="flex items-center gap-3 group text-left focus:outline-none"
         >
-          <div className="w-11 h-11 rounded-2xl bg-[#173D28] text-[#C4E89A] border-2 border-[#20251F] shadow-[3px_3px_0px_#0B2418] flex items-center justify-center font-bold text-xl group-hover:rotate-6 transition-transform">
-            🌍
+          <div className="w-10 h-10 rounded-xl bg-[#0D2116] border border-[#B8F56B]/40 text-[#B8F56B] flex items-center justify-center font-bold text-lg group-hover:rotate-6 transition-transform glow-lime-sm">
+            🌱
           </div>
           <div>
-            <div className="flex items-center gap-1.5 font-heading text-lg lg:text-xl font-extrabold text-[#0B2418] tracking-tight">
+            <div className="flex items-center gap-1.5 font-heading text-lg font-extrabold text-[#F4F2E8] tracking-tight">
               <span>CARBON WALLET</span>
-              <span className="bg-[#C4E89A] px-2 py-0.5 rounded-lg border-1.5 border-[#20251F] text-xs font-black shadow-[1.5px_1.5px_0px_#0B2418]">
+              <span className="bg-[#B8F56B] text-[#07110B] px-2 py-0.5 rounded text-xs font-black">
                 AI
               </span>
             </div>
-            <p className="hidden sm:block text-[11px] font-handwritten text-[#173D28] font-bold tracking-wide -mt-1">
-              "Make carbon as easy to understand as money."
+            <p className="hidden sm:block text-[10px] font-mono text-[#8EBB91] tracking-wider uppercase -mt-0.5">
+              MAKING YOUR CARBON VISIBLE
             </p>
           </div>
-        </button>
+        </motion.button>
 
         {/* Desktop Quick Nav */}
-        <nav className="hidden xl:flex items-center gap-1 bg-[#F6EFE0] p-1.5 rounded-2xl border-2 border-[#20251F] shadow-[3px_3px_0px_#0B2418]">
+        <nav className="hidden xl:flex items-center gap-1 bg-[#0D2116]/80 p-1.5 rounded-2xl border border-[#8EBB91]/20">
           {isLoggedIn ? (
             NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
               return (
-                <button
+                <motion.button
                   key={item.id}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                   onClick={() => setActiveTab(item.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all relative ${
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-colors relative ${
                     isActive
-                      ? "bg-[#173D28] text-[#FFF8E8] shadow-[2px_2px_0px_#0B2418]"
-                      : "text-[#20251F] hover:bg-[#A7C98F]/30"
+                      ? "bg-[#B8F56B] text-[#07110B] shadow-md"
+                      : "text-[#8EBB91] hover:text-[#F4F2E8] hover:bg-[#8EBB91]/10"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? "text-[#C4E89A]" : "text-[#173D28]"}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? "text-[#07110B]" : "text-[#8EBB91]"}`} />
                   <span>{item.label}</span>
                   {item.badge && !isActive && (
-                    <span className="text-[10px] bg-[#C4E89A] text-[#0B2418] px-1.5 py-0.5 rounded-md font-extrabold border border-[#20251F]">
+                    <span className="text-[9px] bg-[#07110B] text-[#B8F56B] px-1.5 py-0.5 rounded border border-[#B8F56B]/30 font-mono">
                       {item.badge}
                     </span>
                   )}
-                </button>
+                </motion.button>
               );
             })
           ) : (
             <div className="flex items-center gap-2 px-2">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveTab("landing")}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold ${
-                  activeTab === "landing" ? "bg-[#173D28] text-[#FFF8E8]" : "text-[#20251F]"
+                className={`px-4 py-1.5 rounded-xl text-xs font-mono font-bold ${
+                  activeTab === "landing" ? "bg-[#B8F56B] text-[#07110B]" : "text-[#8EBB91]"
                 }`}
               >
-                Home
-              </button>
+                HOME
+              </motion.button>
             </div>
           )}
         </nav>
@@ -106,88 +112,109 @@ export default function Navbar({
           {isLoggedIn ? (
             <>
               {/* Eco Points Pill */}
-              <button
+              <motion.button
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.94 }}
                 onClick={() => setActiveTab("journey")}
-                className="sketch-button flex items-center gap-2 bg-[#C4E89A] px-3 py-1.5 rounded-xl text-xs font-bold text-[#0B2418]"
+                className="flex items-center gap-2 bg-[#0D2116] border border-[#B8F56B]/40 px-3 py-1.5 rounded-xl text-xs font-mono font-bold text-[#B8F56B] glow-lime-sm"
                 title="View Eco Journey"
               >
-                <Coins className="w-4 h-4 text-[#173D28]" />
+                <Coins className="w-4 h-4 text-[#B8F56B]" />
                 <span>{points} EcoPts</span>
-              </button>
+              </motion.button>
 
-              {/* User Dropdown / Avatar */}
-              <div className="flex items-center gap-2 bg-[#F6EFE0] pl-2 pr-3 py-1 rounded-2xl border-2 border-[#20251F]">
-                <div className="w-7 h-7 rounded-full bg-[#173D28] text-[#C4E89A] flex items-center justify-center text-xs font-bold border border-[#20251F]">
+              {/* User Avatar Dropdown */}
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                className="flex items-center gap-2 bg-[#0D2116] border border-[#8EBB91]/20 pl-2 pr-3 py-1 rounded-2xl"
+              >
+                <div className="w-7 h-7 rounded-full bg-[#B8F56B] text-[#07110B] flex items-center justify-center text-xs font-bold">
                   🌱
                 </div>
-                <span className="hidden md:inline text-xs font-extrabold text-[#0B2418]">
+                <span className="hidden md:inline text-xs font-mono font-bold text-[#F4F2E8]">
                   {user.name.split(" ")[0]}
                 </span>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.25, rotate: 15 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={onLogout}
-                  className="p-1 text-[#173D28] hover:text-red-700 hover:scale-110 transition-transform"
+                  className="p-1 text-[#8EBB91] hover:text-red-400 transition-colors"
                   title="Log out"
                 >
                   <LogOut className="w-4 h-4" />
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
             </>
           ) : (
             <div className="flex items-center gap-2">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={onNavigateAuth}
-                className="sketch-button bg-[#F6EFE0] px-4 py-2 rounded-xl text-xs font-extrabold text-[#20251F]"
+                className="px-4 py-2 rounded-xl text-xs font-mono font-bold text-[#8EBB91] hover:text-[#F4F2E8]"
               >
-                Log In
-              </button>
-              <button
+                LOG IN
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={onNavigateAuth}
-                className="sketch-button-accent px-4 py-2 rounded-xl text-xs font-black flex items-center gap-1.5"
+                className="px-4 py-2 rounded-full bg-[#B8F56B] text-[#07110B] text-xs font-mono font-bold flex items-center gap-1.5 glow-lime-sm"
               >
-                <span>Get Started</span>
-                <Leaf className="w-3.5 h-3.5 fill-[#0B2418]" />
-              </button>
+                <span>GET STARTED</span>
+                <Leaf className="w-3.5 h-3.5 fill-[#07110B]" />
+              </motion.button>
             </div>
           )}
 
           {/* Mobile hamburger button */}
           {isLoggedIn && (
-            <button
+            <motion.button
+              whileTap={{ scale: 0.9 }}
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="xl:hidden p-2 rounded-xl bg-[#F6EFE0] border-2 border-[#20251F] text-[#0B2418]"
+              className="xl:hidden p-2 rounded-xl bg-[#0D2116] border border-[#8EBB91]/30 text-[#F4F2E8]"
             >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </motion.button>
           )}
         </div>
       </div>
 
       {/* Mobile Drawer Menu */}
-      {mobileOpen && isLoggedIn && (
-        <div className="xl:hidden mt-3 pt-3 border-t-2 border-[#20251F] grid grid-cols-2 gap-2 animate-in fade-in slide-in-from-top-2">
-          {NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setActiveTab(item.id);
-                  setMobileOpen(false);
-                }}
-                className={`flex items-center gap-2.5 px-3.5 py-3 rounded-xl text-xs font-bold border-2 border-[#20251F] ${
-                  isActive
-                    ? "bg-[#173D28] text-[#FFF8E8] shadow-[3px_3px_0px_#0B2418]"
-                    : "bg-[#F6EFE0] text-[#20251F]"
-                }`}
-              >
-                <Icon className={`w-4 h-4 ${isActive ? "text-[#C4E89A]" : "text-[#173D28]"}`} />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileOpen && isLoggedIn && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="xl:hidden mt-3 pt-3 border-t border-[#8EBB91]/20 grid grid-cols-2 gap-2 overflow-hidden"
+          >
+            {NAV_ITEMS.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <motion.button
+                  key={item.id}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setMobileOpen(false);
+                  }}
+                  className={`flex items-center gap-2.5 px-3.5 py-3 rounded-xl text-xs font-mono font-bold border ${
+                    isActive
+                      ? "bg-[#B8F56B] text-[#07110B] border-[#B8F56B]"
+                      : "bg-[#0D2116] text-[#F4F2E8] border-[#8EBB91]/20"
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? "text-[#07110B]" : "text-[#8EBB91]"}`} />
+                  <span>{item.label}</span>
+                </motion.button>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Send, Bot, User, Sparkles, RefreshCw, MessageSquare, ShieldCheck } from "lucide-react";
 import { MOCK_BOT_RESPONSES } from "../data/mockData";
 import { DemoBadge, LeafDecoration } from "../components/HandDrawnDoodles";
@@ -74,7 +75,12 @@ export default function EcoAIChatbotPage({ user, budget, activities }) {
   ];
 
   return (
-    <div className="space-y-6 p-4 lg:p-8 max-w-5xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="space-y-6 p-4 lg:p-8 max-w-5xl mx-auto"
+    >
       
       {/* Header Banner */}
       <div className="bg-[#F6EFE0] p-6 rounded-3xl border-3 border-[#20251F] shadow-[6px_6px_0px_#0B2418] relative overflow-hidden">
@@ -92,10 +98,13 @@ export default function EcoAIChatbotPage({ user, budget, activities }) {
             </p>
           </div>
 
-          <span className="bg-[#173D28] text-[#C4E89A] border-2 border-[#20251F] text-xs font-black px-3 py-1.5 rounded-full shadow-[2px_2px_0px_#0B2418] shrink-0 self-start md:self-auto flex items-center gap-1.5">
+          <motion.span
+            whileHover={{ scale: 1.05 }}
+            className="bg-[#173D28] text-[#C4E89A] border-2 border-[#20251F] text-xs font-black px-3 py-1.5 rounded-full shadow-[2px_2px_0px_#0B2418] shrink-0 self-start md:self-auto flex items-center gap-1.5 cursor-pointer"
+          >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Smart Climate Engine</span>
-          </span>
+          </motion.span>
         </div>
       </div>
 
@@ -104,41 +113,50 @@ export default function EcoAIChatbotPage({ user, budget, activities }) {
         
         {/* Messages Feed */}
         <div className="space-y-4 overflow-y-auto max-h-[420px] pr-2 pb-4">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex gap-3 max-w-xl ${
-                msg.sender === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
-              }`}
-            >
-              <div
-                className={`w-9 h-9 rounded-2xl border-2 border-[#20251F] flex items-center justify-center font-bold text-sm shrink-0 ${
-                  msg.sender === "user"
-                    ? "bg-[#173D28] text-[#C4E89A]"
-                    : "bg-[#C4E89A] text-[#0B2418]"
+          <AnimatePresence>
+            {messages.map((msg) => (
+              <motion.div
+                key={msg.id}
+                initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.25 }}
+                className={`flex gap-3 max-w-xl ${
+                  msg.sender === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
                 }`}
               >
-                {msg.sender === "user" ? "👤" : "🌿"}
-              </div>
+                <div
+                  className={`w-9 h-9 rounded-2xl border-2 border-[#20251F] flex items-center justify-center font-bold text-sm shrink-0 ${
+                    msg.sender === "user"
+                      ? "bg-[#173D28] text-[#C4E89A]"
+                      : "bg-[#C4E89A] text-[#0B2418]"
+                  }`}
+                >
+                  {msg.sender === "user" ? "👤" : "🌿"}
+                </div>
 
-              <div
-                className={`p-4 rounded-2xl border-2 border-[#20251F] text-xs font-semibold leading-relaxed shadow-[3px_3px_0px_#0B2418] ${
-                  msg.sender === "user"
-                    ? "bg-[#173D28] text-[#FFF8E8]"
-                    : "bg-[#F6EFE0] text-[#0B2418]"
-                }`}
-              >
-                <p>{msg.text}</p>
-                <span className="block text-[10px] opacity-70 mt-1.5 text-right font-mono">
-                  {msg.time}
-                </span>
-              </div>
-            </div>
-          ))}
+                <div
+                  className={`p-4 rounded-2xl border-2 border-[#20251F] text-xs font-semibold leading-relaxed shadow-[3px_3px_0px_#0B2418] ${
+                    msg.sender === "user"
+                      ? "bg-[#173D28] text-[#FFF8E8]"
+                      : "bg-[#F6EFE0] text-[#0B2418]"
+                  }`}
+                >
+                  <p>{msg.text}</p>
+                  <span className="block text-[10px] opacity-70 mt-1.5 text-right font-mono">
+                    {msg.time}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
 
           {/* Typing Indicator */}
           {isTyping && (
-            <div className="flex items-center gap-3 mr-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-3 mr-auto"
+            >
               <div className="w-9 h-9 rounded-2xl bg-[#C4E89A] text-[#0B2418] border-2 border-[#20251F] flex items-center justify-center text-sm font-bold">
                 🌿
               </div>
@@ -148,7 +166,7 @@ export default function EcoAIChatbotPage({ user, budget, activities }) {
                 <span className="w-2 h-2 rounded-full bg-[#173D28] animate-bounce [animation-delay:0.4s]" />
                 <span className="text-[11px] font-bold text-[#173D28] ml-2">EcoAI is thinking...</span>
               </div>
-            </div>
+            </motion.div>
           )}
 
           <div ref={chatEndRef} />
@@ -161,13 +179,15 @@ export default function EcoAIChatbotPage({ user, budget, activities }) {
           </p>
           <div className="flex flex-wrap gap-2">
             {samplePrompts.map((prompt, idx) => (
-              <button
+              <motion.button
                 key={idx}
+                whileHover={{ scale: 1.04, y: -1 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => handleSendMessage(prompt)}
-                className="text-xs font-extrabold bg-[#F6EFE0] hover:bg-[#C4E89A] border-1.5 border-[#20251F] px-3 py-1.5 rounded-xl transition-all text-[#0B2418] hover:-translate-y-0.5"
+                className="text-xs font-extrabold bg-[#F6EFE0] hover:bg-[#C4E89A] border-1.5 border-[#20251F] px-3 py-1.5 rounded-xl transition-colors text-[#0B2418]"
               >
                 💬 "{prompt}"
-              </button>
+              </motion.button>
             ))}
           </div>
 
@@ -186,19 +206,22 @@ export default function EcoAIChatbotPage({ user, budget, activities }) {
               placeholder="Ask EcoAI anything about your carbon budget..."
               className="flex-1 bg-[#F6EFE0] border-2 border-[#20251F] rounded-2xl px-4 py-3 text-xs font-bold text-[#0B2418] focus:outline-none"
             />
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={!inputText.trim()}
               className="sketch-button-accent px-5 py-3 rounded-2xl font-black text-xs flex items-center gap-1.5 disabled:opacity-50"
             >
               <span>Send</span>
               <Send className="w-4 h-4" />
-            </button>
+            </motion.button>
           </form>
         </div>
 
       </div>
 
-    </div>
+    </motion.div>
   );
 }
+

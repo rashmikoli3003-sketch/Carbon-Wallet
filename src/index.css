@@ -2,152 +2,84 @@
 
 @layer base {
   :root {
-    --forest-green: #173D28;
-    --deep-green: #0B2418;
-    --soft-sage: #A7C98F;
-    --cream: #FFF8E8;
-    --parchment: #F6EFE0;
-    --charcoal: #20251F;
-    --accent-green: #C4E89A;
+    --bg-dark: #07110B;
+    --bg-dark-secondary: #0D2116;
+    --text-primary: #F4F2E8;
+    --accent-lime: #B8F56B;
+    --accent-sage: #8EBB91;
+    --accent-gold: #D5B86A;
   }
 
   body {
-    background-color: var(--cream);
-    color: var(--charcoal);
-    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Instrument Sans', 'Inter', sans-serif;
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, .font-heading {
-    font-family: 'Bricolage Grotesque', 'DM Sans', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
   }
 
   .font-handwritten {
-    font-family: 'Caveat', 'Patrick Hand', cursive;
+    font-family: 'Caveat', cursive;
   }
 }
 
-/* Custom Sketch Styling & Aesthetics */
-.sketch-card {
-  background-color: #F8F2E2;
-  border: 2.5px solid #20251F;
-  border-radius: 20px;
-  box-shadow: 5px 5px 0px #0B2418;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+/* Atmospheric Grids & Lighting */
+.bg-mesh-grid {
+  background-image: linear-gradient(to right, rgba(142, 187, 145, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(142, 187, 145, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-.sketch-card:hover {
+.glow-lime {
+  box-shadow: 0 0 40px rgba(184, 245, 107, 0.15);
+}
+
+.glow-lime-sm {
+  box-shadow: 0 0 20px rgba(184, 245, 107, 0.12);
+}
+
+.glow-sage {
+  box-shadow: 0 0 40px rgba(142, 187, 145, 0.12);
+}
+
+/* Awwwards Editorial Cards */
+.editorial-card {
+  background: rgba(13, 33, 22, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(142, 187, 145, 0.2);
+  border-radius: 24px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-card:hover {
+  border-color: rgba(184, 245, 107, 0.4);
   transform: translateY(-2px);
-  box-shadow: 7px 7px 0px #0B2418;
+  box-shadow: 0 10px 30px rgba(7, 17, 11, 0.6), 0 0 20px rgba(184, 245, 107, 0.08);
 }
 
-.sketch-card-dark {
-  background-color: #173D28;
-  color: #FFF8E8;
-  border: 2.5px solid #C4E89A;
-  border-radius: 20px;
-  box-shadow: 5px 5px 0px #0B2418;
-  transition: all 0.2s ease;
-}
-
-.sketch-card-dark:hover {
-  transform: translateY(-2px);
-  box-shadow: 7px 7px 0px #0B2418;
-}
-
-.sketch-button {
-  border: 2.5px solid #20251F;
-  box-shadow: 3.5px 3.5px 0px #0B2418;
-  transition: all 0.15s ease-in-out;
-}
-
-.sketch-button:hover {
-  transform: translate(-1.5px, -1.5px);
-  box-shadow: 5px 5px 0px #0B2418;
-}
-
-.sketch-button:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1.5px 1.5px 0px #0B2418;
-}
-
-.sketch-button-accent {
-  background-color: #C4E89A;
-  color: #0B2418;
-  font-weight: 700;
-  border: 2.5px solid #20251F;
-  box-shadow: 3.5px 3.5px 0px #0B2418;
-}
-
-.sketch-button-accent:hover {
-  background-color: #d2f2aa;
-  transform: translate(-1.5px, -1.5px);
-  box-shadow: 5.5px 5.5px 0px #0B2418;
-}
-
-.paper-texture {
-  background-image: radial-gradient(#173d2812 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-/* Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(1.5deg); }
-}
-
-@keyframes float-reverse {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(8px) rotate(-1.5deg); }
-}
-
-@keyframes scan-line {
-  0% { top: 0%; opacity: 0.8; }
-  50% { top: 90%; opacity: 1; }
-  100% { top: 0%; opacity: 0.8; }
-}
-
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.03); }
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: float-reverse 5s ease-in-out 1s infinite;
-}
-
-.animate-scan {
-  animation: scan-line 2.5s ease-in-out infinite;
-}
-
-.animate-pulse-subtle {
-  animation: pulse-subtle 3s ease-in-out infinite;
-}
-
-/* Wavy / Rough SVG Border helper */
-.sketch-badge {
-  border: 2px solid #20251F;
-  border-radius: 9999px;
-  box-shadow: 2px 2px 0px #0B2418;
+.editorial-card-lime {
+  background: rgba(184, 245, 107, 0.08);
+  border: 1px solid rgba(184, 245, 107, 0.3);
+  border-radius: 24px;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #FFF8E8;
+  background: #07110B;
 }
 ::-webkit-scrollbar-thumb {
-  background: #A7C98F;
+  background: #0D2116;
   border-radius: 4px;
-  border: 2px solid #20251F;
+  border: 1px solid rgba(142, 187, 145, 0.3);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #173D28;
+  background: #B8F56B;
 }
+

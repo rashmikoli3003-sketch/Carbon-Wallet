@@ -147,8 +147,10 @@ export default function CarbonScannerPage({ onLogActivity }) {
             {/* Quick search tags */}
             <div className="flex flex-wrap gap-1.5 pt-1">
               {["Beef burger", "Nutella", "15 km Drive", "Flight 500km", "Laptop"].map((sample) => (
-                <button
+                <motion.button
                   key={sample}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     setQuery(sample);
                     handleScan(sample);
@@ -156,12 +158,14 @@ export default function CarbonScannerPage({ onLogActivity }) {
                   className="text-[11px] font-bold bg-[#F6EFE0] hover:bg-[#C4E89A] border border-[#20251F] px-2.5 py-1 rounded-lg transition-colors text-[#0B2418]"
                 >
                   + {sample}
-                </button>
+                </motion.button>
               ))}
             </div>
 
             {/* Scan Button */}
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
               onClick={() => handleScan()}
               disabled={isScanning}
               className="w-full sketch-button-accent py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 mt-4"
@@ -177,7 +181,7 @@ export default function CarbonScannerPage({ onLogActivity }) {
                   <span>Calculate Real-Time Impact</span>
                 </>
               )}
-            </button>
+            </motion.button>
           </div>
         </div>
 

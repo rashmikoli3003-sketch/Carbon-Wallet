@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import OnboardingPage from "./pages/OnboardingPage";
@@ -132,7 +133,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF8E8] flex flex-col font-inter text-[#20251F]">
+    <div className="min-h-screen bg-[#07110B] flex flex-col font-sans text-[#F4F2E8]">
       
       {/* Show Navbar on main screens */}
       {activeTab !== "onboarding" && (
@@ -147,63 +148,85 @@ export default function App() {
         />
       )}
 
-      {/* Main View Router */}
-      {activeTab === "onboarding" ? (
-        <OnboardingPage onFinishOnboarding={() => setActiveTab("auth")} />
-      ) : activeTab === "landing" ? (
-        <LandingPage
-          onStartJourney={() => setActiveTab(isLoggedIn ? "dashboard" : "auth")}
-          onExploreFeatures={() => setActiveTab("what-if")}
-        />
-      ) : activeTab === "auth" ? (
-        <AuthPage onLoginSuccess={handleLoginSuccess} />
-      ) : (
-        <div className="flex-1 flex overflow-hidden">
-          {/* Sidebar Navigation */}
-          <Sidebar
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            user={user}
-            onLogout={handleLogout}
-          />
+      {/* Main View Router with AnimatePresence */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -12 }}
+          transition={{ duration: 0.25, ease: "easeInOut" }}
+          className="flex-1 flex flex-col min-h-0"
+        >
+          {activeTab === "onboarding" ? (
+            <OnboardingPage onFinishOnboarding={() => setActiveTab("auth")} />
+          ) : activeTab === "landing" ? (
+            <LandingPage
+              onStartJourney={() => setActiveTab(isLoggedIn ? "dashboard" : "auth")}
+              onExploreFeatures={() => setActiveTab("what-if")}
+            />
+          ) : activeTab === "auth" ? (
+            <AuthPage onLoginSuccess={handleLoginSuccess} />
+          ) : (
+            <div className="flex-1 flex overflow-hidden">
+              {/* Sidebar Navigation */}
+              <Sidebar
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                user={user}
+                onLogout={handleLogout}
+              />
 
-          {/* Main Dashboard Content */}
-          <main className="flex-1 overflow-y-auto min-h-[calc(100vh-65px)] pb-16">
-            {activeTab === "dashboard" || activeTab === "my-carbon" ? (
-              <DashboardPage
-                user={user}
-                budget={budget}
-                categories={categories}
-                activities={activities}
-                onAddActivity={handleAddActivity}
-                onDeleteActivity={handleDeleteActivity}
-                onNavigateTab={setActiveTab}
-              />
-            ) : activeTab === "scanner" ? (
-              <CarbonScannerPage onLogActivity={handleAddActivity} />
-            ) : activeTab === "what-if" ? (
-              <WhatIfPage />
-            ) : activeTab === "ecoai" ? (
-              <EcoAIChatbotPage user={user} budget={budget} activities={activities} />
-            ) : activeTab === "journey" ? (
-              <EcoJourneyPage
-                points={points}
-                streak={streak}
-                onAddPoints={handleAddPoints}
-              />
-            ) : activeTab === "settings" ? (
-              <SettingsPage
-                user={user}
-                budget={budget}
-                onUpdateUser={setUser}
-                onUpdateBudget={setBudget}
-                onResetData={handleResetData}
-              />
-            ) : null}
-          </main>
-        </div>
-      )}
+              {/* Main Dashboard Content */}
+              <main className="flex-1 overflow-y-auto min-h-[calc(100vh-65px)] pb-16">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, scale: 0.99, y: 8 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.99, y: -8 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {activeTab === "dashboard" || activeTab === "my-carbon" ? (
+                      <DashboardPage
+                        user={user}
+                        budget={budget}
+                        categories={categories}
+                        activities={activities}
+                        onAddActivity={handleAddActivity}
+                        onDeleteActivity={handleDeleteActivity}
+                        onNavigateTab={setActiveTab}
+                      />
+                    ) : activeTab === "scanner" ? (
+                      <CarbonScannerPage onLogActivity={handleAddActivity} />
+                    ) : activeTab === "what-if" ? (
+                      <WhatIfPage />
+                    ) : activeTab === "ecoai" ? (
+                      <EcoAIChatbotPage user={user} budget={budget} activities={activities} />
+                    ) : activeTab === "journey" ? (
+                      <EcoJourneyPage
+                        points={points}
+                        streak={streak}
+                        onAddPoints={handleAddPoints}
+                      />
+                    ) : activeTab === "settings" ? (
+                      <SettingsPage
+                        user={user}
+                        budget={budget}
+                        onUpdateUser={setUser}
+                        onUpdateBudget={setBudget}
+                        onResetData={handleResetData}
+                      />
+                    ) : null}
+                  </motion.div>
+                </AnimatePresence>
+              </main>
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
 
     </div>
   );
 }
+
