@@ -223,158 +223,46 @@ export default function LandingPage({ onStartJourney, onExploreFeatures, onNavig
             </p>
           </div>
 
-          {/* 3 Interactive Animated Feature Panels */}
+          {/* 3 Short Points */}
           <div className="grid md:grid-cols-3 gap-8">
             
-            {/* Panel 01 / HABITS */}
             <motion.div
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1, type: "spring", stiffness: 180, damping: 20 }}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className="editorial-card p-8 space-y-5 group relative overflow-hidden transition-all duration-300 hover:border-[#B8F56B]/60 hover:shadow-[0_12px_35px_rgba(184,245,107,0.18)]"
+              whileHover={{ y: -6 }}
+              className="editorial-card p-8 space-y-4"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#B8F56B] flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#B8F56B] animate-pulse" />
-                  01 / HABITS
-                </span>
-                <span className="text-[10px] font-mono text-[#8EBB91] bg-[#07110B] px-2 py-0.5 rounded border border-[#8EBB91]/20">
-                  REAL-TIME
-                </span>
-              </div>
-
-              <h3 className="font-heading text-2xl font-bold text-[#F4F2E8] group-hover:text-[#B8F56B] transition-colors">
+              <span className="text-xs font-mono font-bold text-[#B8F56B]">01 / HABITS</span>
+              <h3 className="font-heading text-2xl font-bold text-[#F4F2E8]">
                 UNDERSTAND YOUR HABITS
               </h3>
-
               <p className="text-sm text-[#8EBB91] leading-relaxed">
                 Discover which daily activities — transportation, meals, or home energy — drive your carbon footprint.
               </p>
-
-              {/* Micro Motion Visual: Animated Activity Pills */}
-              <div className="pt-2 border-t border-[#8EBB91]/15 flex flex-wrap gap-2">
-                <motion.div
-                  animate={{ y: [0, -4, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="px-2.5 py-1 rounded-full bg-[#07110B] border border-[#8EBB91]/30 text-[11px] font-mono text-[#F4F2E8] flex items-center gap-1.5"
-                >
-                  <span>🚗</span> Commute <span className="text-[#D5B86A] font-bold">4.2kg</span>
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [-2, 2, -2] }}
-                  transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-                  className="px-2.5 py-1 rounded-full bg-[#07110B] border border-[#B8F56B]/40 text-[11px] font-mono text-[#B8F56B] flex items-center gap-1.5"
-                >
-                  <span>🥗</span> Meals <span className="text-[#B8F56B] font-bold">1.8kg</span>
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [0, -3, 0] }}
-                  transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-                  className="px-2.5 py-1 rounded-full bg-[#07110B] border border-[#8EBB91]/30 text-[11px] font-mono text-[#8EBB91] flex items-center gap-1.5"
-                >
-                  <span>⚡</span> Power <span className="text-[#8EBB91] font-bold">3.1kg</span>
-                </motion.div>
-              </div>
             </motion.div>
 
-            {/* Panel 02 / IMPACT */}
             <motion.div
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.25, type: "spring", stiffness: 180, damping: 20 }}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className="editorial-card p-8 space-y-5 border-[#B8F56B]/40 group relative overflow-hidden transition-all duration-300 hover:border-[#B8F56B] hover:shadow-[0_12px_35px_rgba(184,245,107,0.22)]"
+              whileHover={{ y: -6 }}
+              className="editorial-card p-8 space-y-4 border-[#B8F56B]/30"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#B8F56B] flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#B8F56B] animate-ping" />
-                  02 / IMPACT
-                </span>
-                <span className="text-[10px] font-mono text-[#B8F56B] bg-[#B8F56B]/10 px-2 py-0.5 rounded border border-[#B8F56B]/30 font-bold">
-                  LIVE GAUGES
-                </span>
-              </div>
-
+              <span className="text-xs font-mono font-bold text-[#B8F56B]">02 / IMPACT</span>
               <h3 className="font-heading text-2xl font-bold text-[#B8F56B]">
                 SEE YOUR IMPACT
               </h3>
-
               <p className="text-sm text-[#8EBB91] leading-relaxed">
                 Track your monthly allowance against Paris Climate targets with live budget capacity gauges.
               </p>
-
-              {/* Micro Motion Visual: Animated Live Carbon Progress Gauge */}
-              <div className="pt-2 border-t border-[#8EBB91]/15 space-y-2">
-                <div className="flex justify-between text-xs font-mono">
-                  <span className="text-[#8EBB91]">Monthly Budget Used</span>
-                  <span className="text-[#B8F56B] font-bold">68% (68kg / 100kg)</span>
-                </div>
-                <div className="h-2.5 w-full bg-[#07110B] rounded-full p-0.5 border border-[#8EBB91]/20 overflow-hidden relative">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "68%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
-                    className="h-full bg-gradient-to-r from-[#8EBB91] via-[#B8F56B] to-[#C4E89A] rounded-full relative"
-                  >
-                    <span className="absolute right-0 top-0 bottom-0 w-2 bg-white rounded-full animate-pulse shadow-[0_0_8px_#FFF]" />
-                  </motion.div>
-                </div>
-              </div>
             </motion.div>
 
-            {/* Panel 03 / CHOICES */}
             <motion.div
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4, type: "spring", stiffness: 180, damping: 20 }}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className="editorial-card p-8 space-y-5 group relative overflow-hidden transition-all duration-300 hover:border-[#B8F56B]/60 hover:shadow-[0_12px_35px_rgba(184,245,107,0.18)]"
+              whileHover={{ y: -6 }}
+              className="editorial-card p-8 space-y-4"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#B8F56B] flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#B8F56B] animate-pulse" />
-                  03 / CHOICES
-                </span>
-                <span className="text-[10px] font-mono text-[#D5B86A] bg-[#D5B86A]/10 px-2 py-0.5 rounded border border-[#D5B86A]/30">
-                  WHAT-IF MODE
-                </span>
-              </div>
-
-              <h3 className="font-heading text-2xl font-bold text-[#F4F2E8] group-hover:text-[#B8F56B] transition-colors">
+              <span className="text-xs font-mono font-bold text-[#B8F56B]">03 / CHOICES</span>
+              <h3 className="font-heading text-2xl font-bold text-[#F4F2E8]">
                 EXPLORE YOUR OPTIONS
               </h3>
-
               <p className="text-sm text-[#8EBB91] leading-relaxed">
                 Simulate lifestyle adjustments with What-If scenario forecasting to find low-stress green swaps.
               </p>
-
-              {/* Micro Motion Visual: Animated Interactive Swap Badge */}
-              <div className="pt-2 border-t border-[#8EBB91]/15 flex items-center justify-between bg-[#07110B] p-2.5 rounded-xl border border-[#8EBB91]/20">
-                <div className="flex items-center gap-2 text-xs font-mono text-[#8EBB91]">
-                  <span>🚗 Solo Ride</span>
-                  <motion.span
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="text-[#B8F56B] font-bold"
-                  >
-                    ➔
-                  </motion.span>
-                  <span className="text-[#F4F2E8] font-bold">🚌 Bus</span>
-                </div>
-                <motion.span
-                  whileHover={{ scale: 1.1 }}
-                  className="bg-[#B8F56B] text-[#07110B] text-[10px] font-mono font-black px-2 py-1 rounded-md shadow-sm"
-                >
-                  -81% CO₂
-                </motion.span>
-              </div>
             </motion.div>
 
           </div>
