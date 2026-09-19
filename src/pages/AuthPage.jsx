@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff, Mail, Lock, User, MapPin, ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, MapPin, ArrowRight, CheckCircle2, ShieldCheck, Loader2 } from "lucide-react";
 import ClimateVisual from "../components/ClimateVisual";
+import { supabase, isSupabaseConfigured } from "../lib/supabase";
 
 export default function AuthPage({ onLoginSuccess }) {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -14,35 +15,97 @@ export default function AuthPage({ onLoginSuccess }) {
   const [password, setPassword] = useState("password123");
   const [confirmPassword, setConfirmPassword] = useState("password123");
   const [city, setCity] = useState("San Francisco, CA");
+  const [loading, setLoading] = useState(false);
 
   const [notification, setNotification] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSignUp && password !== confirmPassword) {
       setNotification({ type: "error", message: "Passwords do not match!" });
       return;
     }
-    
-    setNotification({ type: "success", message: "Authentication Successful!" });
-    setTimeout(() => {
-      onLoginSuccess({
-        name: name || "Eco Explorer",
-        email: email || "user@carbonwallet.ai",
-        city: city || "San Francisco, CA",
-      });
-    }, 600);
+
+    setLoading(true);
+    setNotification(null);
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        if (isSignUp) {
+          const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              data: { name: name || "Eco Explorer", city: city || "San Francisco, CA" }
+            }
+          });
+
+          if (error) throw error;
+
+          setNotification({ type: "success", message: "Account created! Logging you in..." });
+          setTimeout(() => {
+            onLoginSuccess({
+              id: data.user?.id,
+              name: name || "Eco Explorer",
+              email: email,
+              city: city || "San Francisco, CA",
+            });
+          }, 800);
+        } else {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (error) throw error;
+
+          setNotification({ type: "success", message: "Signed in successfully!" });
+          setTimeout(() => {
+            onLoginSuccess({
+              id: data.user?.id,
+              name: data.user?.user_metadata?.name || name || "Eco Explorer",
+              email: data.user?.email || email,
+              city: data.user?.user_metadata?.city || city || "San Francisco, CA",
+            });
+          }, 600);
+        }
+      } catch (err) {
+        setNotification({ type: "error", message: err.message || "Authentication failed" });
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Local demo mode fallback
+      setNotification({ type: "success", message: "Authentication Successful (Interactive Session)!" });
+      setTimeout(() => {
+        onLoginSuccess({
+          name: name || "Eco Explorer",
+          email: email || "user@carbonwallet.ai",
+          city: city || "San Francisco, CA",
+        });
+        setLoading(false);
+      }, 600);
+    }
   };
 
-  const handleGoogleLogin = () => {
-    setNotification({ type: "success", message: "Google Auth Signed In!" });
-    setTimeout(() => {
-      onLoginSuccess({
-        name: "Eco Explorer (Google)",
-        email: "eco.explorer.google@gmail.com",
-        city: "San Francisco, CA",
+  const handleGoogleLogin = async () => {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
       });
-    }, 600);
+      if (error) {
+        setNotification({ type: "error", message: error.message });
+      }
+    } else {
+      setNotification({ type: "success", message: "Google Auth Signed In!" });
+      setTimeout(() => {
+        onLoginSuccess({
+          name: "Eco Explorer (Google)",
+          email: "eco.explorer.google@gmail.com",
+          city: "San Francisco, CA",
+        });
+      }, 600);
+    }
   };
 
   return (
@@ -272,10 +335,17 @@ export default function AuthPage({ onLoginSuccess }) {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 type="submit"
-                className="w-full py-3.5 rounded-full bg-[#B8F56B] text-[#07110B] font-heading font-extrabold text-xs tracking-wider uppercase flex items-center justify-center gap-2 glow-lime"
+                disabled={loading}
+                className="w-full py-3.5 rounded-full bg-[#B8F56B] text-[#07110B] font-heading font-extrabold text-xs tracking-wider uppercase flex items-center justify-center gap-2 glow-lime disabled:opacity-50"
               >
-                <span>{isSignUp ? "CREATE YOUR CARBON WALLET" : "LOGIN"}</span>
-                <ArrowRight className="w-4 h-4" />
+                {loading ? (
+                  <Loader2 className="w-4 h-4 animate-spin text-[#07110B]" />
+                ) : (
+                  <>
+                    <span>{isSignUp ? "CREATE YOUR CARBON WALLET" : "LOGIN"}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </motion.button>
             </form>
 
